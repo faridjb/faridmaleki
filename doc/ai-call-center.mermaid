@@ -1,0 +1,19 @@
+flowchart TD
+    Caller([Caller Audio In]) --> LB[Nginx Load Balancer]
+    LB --> ASR[ASR Model Pool]
+    ASR --> ORCH[LangGraph Orchestrator<br/>Intent Detection]
+    ORCH -->|tool call| KB[(Knowledge Retrieval / RAG)]
+    ORCH -->|tool call| CRM[(CRM & Ticketing APIs)]
+    KB --> ORCH
+    CRM --> ORCH
+    ORCH --> LLM[LLM Response Composition]
+    LLM --> TTS[TTS Model Pool]
+    TTS --> LB
+    LB --> CallerOut([Caller Audio Out])
+
+    ASR -.metrics.-> MON[Prometheus + Grafana]
+    LLM -.metrics.-> MON
+    TTS -.metrics.-> MON
+
+    style MON fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style ORCH fill:#111827,stroke:#6366F1,color:#E5E7EB

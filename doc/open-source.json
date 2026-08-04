@@ -1,0 +1,6 @@
+{
+  "githubUsername": "faridjb",
+  "apiEndpoint": "https://api.github.com/users/faridjb/repos?sort=updated",
+  "note": "Sprint 11 auto-fetches repos/stars/languages/last-updated from this username at build or client-side fetch time — no manual repo list needed.",
+  "featuredRepo": "TODO — which repo should be the one with a full case-study writeup in projects.json (id: open-source-github-project)? Candidates from memory: the KC-135 Stratotanker YOLOv8 detector, or the Jetson Nano airplane-detection image pipeline."
+}

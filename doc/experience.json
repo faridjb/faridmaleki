@@ -1,0 +1,88 @@
+[
+  {
+    "company": "MCI R&D Center",
+    "role": "Senior Data Scientist / AI Engineer",
+    "period": "November 2025 – Present",
+    "location": "Tehran, Iran",
+    "summary": "Driving AI transformation in telecommunications through autonomous systems and network intelligence.",
+    "technologies": ["LangGraph", "ASR/TTS", "Nginx", "Prometheus", "Grafana", "Python", "Time-series analysis", "ETL"],
+    "achievements": [
+      "Architected and deployed an on-premise voice-to-voice AI call center agent replacing human operations, with intent detection, knowledge retrieval, and API integration as binding tools",
+      "Built a model pool architecture for ASR, LLM, and TTS with Nginx load balancing — cut latency 70% (3x faster) and raised throughput to 100 concurrent calls",
+      "Integrated with CRM and ticketing systems for end-to-end customer service automation",
+      "Built an agentic anomaly-detection system for APN core-network nodes using seasonality/holiday-aware time-series analysis, reducing MTTR to under 1 hour",
+      "Enriched the national BTS database — mapped and labeled 30,000+ BTS locations including VIP regions (hospitals, emergency services) with an interactive search dashboard"
+    ],
+    "images": []
+  },
+  {
+    "company": "Robin",
+    "role": "AI Engineer",
+    "period": "May 2025 – November 2025",
+    "location": "Tehran Province, Iran (remote, Utrecht-based company)",
+    "summary": "Built matching, recommendation, and conversational systems for a recruitment platform.",
+    "technologies": ["Elasticsearch", "Vespa.ai", "Embeddings", "Sparse vectors", "ETL", "NLP"],
+    "achievements": [
+      "Designed a CV-to-job matching system on Elasticsearch and Vespa.ai, improving relevance accuracy by 33%",
+      "Built a personalized recommendation system with preference vectors updated from user action data — improved relevant-result discovery up to 50% and preference accuracy up to 70% in the first iteration",
+      "Designed an industry-oriented conversational chatbot with scenario-flow data collection, increasing recruiter data completeness by 70%"
+    ],
+    "images": []
+  },
+  {
+    "company": "Procycons",
+    "role": "Data Scientist",
+    "period": "October 2024 – May 2025",
+    "location": "Germany (remote)",
+    "summary": "Built responsible AI pipelines for automated ESG compliance processing in regulated financial reporting.",
+    "technologies": ["Temporal.io", "FastAPI", "NLP", "Table detection", "Prompt optimization"],
+    "achievements": [
+      "Orchestrated scalable, auditable document-processing microservices with Temporal.io + FastAPI using event-driven workflow patterns",
+      "Built structured information-extraction pipelines achieving ~80%+ accuracy on complex ESG reports",
+      "Applied prompt optimization and output validation to meet compliance-grade reliability requirements"
+    ],
+    "images": []
+  },
+  {
+    "company": "Eastern Pharmaceutical Group Pty Ltd",
+    "role": "AI Engineer / Data Scientist",
+    "period": "October 2023 – September 2024",
+    "location": "Sydney, NSW (remote)",
+    "summary": "Led a 3-person team building EviPackAI, a production RAG platform for clinical and traditional evidence-package document generation.",
+    "technologies": ["RAG", "Vector database", "Retrieval evaluation", "Guardrails/output validation"],
+    "achievements": [
+      "Designed an end-to-end RAG backend with curated golden-source medical literature and retrieval evaluation frameworks",
+      "Implemented guardrails and output validation for clinical evidence compliance",
+      "Cut document generation turnaround from 6 weeks to 30 minutes with 95%+ retrieval accuracy"
+    ],
+    "images": []
+  },
+  {
+    "company": "RighTel",
+    "role": "AI Engineer",
+    "period": "November 2021 – September 2023",
+    "location": "Tehran Province, Iran",
+    "summary": "AI engineer on Rightel's Network Performance Monitoring (NPM) team, automating anomaly detection across RAN and CORE networks.",
+    "technologies": ["Machine Learning", "Time-series analysis", "OSS/NMS integration"],
+    "achievements": [
+      "Built and deployed an AI-powered anomaly-detection system across UMTS and LTE networks using long-/short-term trend comparison",
+      "Automated Rightel's Core-FO reporting chain end-to-end with ML-driven detection and root-cause identification",
+      "Integrated the ticketing system API with anomaly-detection workflows for automatic ticket creation and status updates",
+      "Built autonomous KPI/OSS-counter extraction pipelines and an automated email reporting system for visualized KPIs and recommendations"
+    ],
+    "images": []
+  },
+  {
+    "company": "National Tsing Hua University",
+    "role": "Researcher",
+    "period": "July 2018 – September 2021",
+    "location": "Hsinchu, Taiwan",
+    "summary": "Research on Speech Emotion Recognition (SER) using CSF feature analysis.",
+    "technologies": ["Deep Learning", "Python", "MATLAB"],
+    "achievements": [
+      "Extracted a new feature set (CSF) for SER classification",
+      "Designed and fine-tuned deep learning classification models for SER"
+    ],
+    "images": []
+  }
+]

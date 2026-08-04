@@ -1,0 +1,41 @@
+{
+  "topSkills": ["Model Context Protocol (MCP)", "Prompt Engineering", "Product Development"],
+  "categories": [
+    {
+      "name": "Agent Frameworks & Orchestration",
+      "skills": ["LangGraph", "LangChain", "Hermes Agent", "OpenClaw", "Temporal.io", "Flowise", "AnythingLLM", "MCP"]
+    },
+    {
+      "name": "LLM Providers",
+      "skills": ["OpenAI", "Anthropic (Claude)", "Google Gemini", "Mistral"]
+    },
+    {
+      "name": "Vector Search & Retrieval",
+      "skills": ["Qdrant", "Vespa.ai", "Elasticsearch"]
+    },
+    {
+      "name": "Infrastructure & MLOps",
+      "skills": ["Docker", "Kubernetes", "Prometheus", "Grafana", "Loki", "GCP", "Azure", "Nginx"]
+    },
+    {
+      "name": "Development",
+      "skills": ["Python", "FastAPI", "Django", "PyTorch", "HuggingFace", "TypeScript"]
+    },
+    {
+      "name": "Data & Analysis",
+      "skills": ["Time-series analysis", "ETL pipelines", "NLP", "Machine Learning"]
+    }
+  ],
+  "languages": [
+    { "name": "English", "level": "Professional Working" },
+    { "name": "Persian", "level": "Native or Bilingual" },
+    { "name": "Turkish", "level": "Limited Working" }
+  ],
+  "explicitGaps": [
+    "LLM fine-tuning",
+    "Graph RAG",
+    "RAGAS / LangSmith",
+    "Pinecone / Weaviate / FAISS",
+    "n8n / Make / Zapier"
+  ]
+}

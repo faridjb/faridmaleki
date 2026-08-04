@@ -1,0 +1,11 @@
+flowchart TD
+    SRC[(Licensed Medical<br/>Literature)] --> CURATE[Golden-Source Curation]
+    CURATE --> VDB[(Vector Database)]
+    VDB --> RET[Retrieval Layer]
+    RET --> EVAL[Retrieval Evaluation<br/>Framework]
+    EVAL --> GEN[Guardrailed Generation]
+    GEN --> OUT[(Evidence Package Output)]
+    GEN -.production monitoring.-> EVAL
+
+    style RET fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style GEN fill:#111827,stroke:#6366F1,color:#E5E7EB

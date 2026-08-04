@@ -1,0 +1,10 @@
+flowchart LR
+    OSS[(Live OSS Data<br/>APN Core Nodes)] --> ETL[ETL Pipeline]
+    ETL --> MODEL[Seasonality & Holiday-Aware<br/>Anomaly Detection Model]
+    MODEL --> RCA[Agentic Root-Cause<br/>Analysis Layer]
+    RCA --> ALERT[Automated Email Reports]
+    RCA --> DASH[Live Dashboard]
+    DASH -.feedback.-> MODEL
+
+    style MODEL fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style RCA fill:#111827,stroke:#6366F1,color:#E5E7EB

@@ -1,0 +1,11 @@
+flowchart TD
+    DOC[(Incoming ESG Documents)] --> API[FastAPI Ingestion Service]
+    API --> WF[Temporal.io Workflow Orchestrator]
+    WF --> NLP[NLP Extraction]
+    WF --> TBL[Table Detection]
+    NLP --> VAL[Prompt Optimization &<br/>Output Validation]
+    TBL --> VAL
+    VAL --> AUDIT[(Auditable Output +<br/>Compliance Trail)]
+
+    style WF fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style VAL fill:#111827,stroke:#6366F1,color:#E5E7EB

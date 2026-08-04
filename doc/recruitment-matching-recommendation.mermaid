@@ -1,0 +1,17 @@
+flowchart TD
+    CV[(Candidate CVs)] --> EXT[Concept Extraction]
+    JOB[(Job Posts)] --> EXT
+    EXT --> VEC[Embedding + Sparse<br/>Vector Generation]
+    VEC --> INDEX[(Elasticsearch / Vespa.ai Index)]
+    INDEX --> MATCH[Similarity Matching Algorithm]
+    MATCH --> RESULT[Ranked Results]
+
+    USER[User Actions] --> PREF[Preference Vector<br/>Update Pipeline]
+    PREF --> RANK[Ranking Profile Fine-Tuning]
+    RANK --> MATCH
+
+    CHAT[Conversational Chatbot] --> FLOW[Scenario Flow /<br/>Data Sufficiency Check]
+    FLOW --> MATCH
+
+    style MATCH fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style PREF fill:#111827,stroke:#6366F1,color:#E5E7EB

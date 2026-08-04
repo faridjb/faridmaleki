@@ -1,0 +1,27 @@
+{
+  "name": "Farid J. Maleki",
+  "title": "Senior Data Scientist / AI Engineer",
+  "tagline": "Driving AI Transformation — Conversational AI, Agentic Orchestration, LLMOps",
+  "location": "Netherlands (open to EU relocation incl. Frankfurt; open to worldwide remote/hybrid/on-site)",
+  "email": "farid.j.eng@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/farid-j-maleki",
+  "github": "",
+  "summary": "Senior AI Engineer/Data Scientist with 6+ years of experience delivering production AI systems, with a focus on conversational AI backends, agentic orchestration, and LLM-integrated services in regulated and customer-facing environments. Experienced in designing secure, context-aware backend architectures that connect AI agents to core business systems through well-defined APIs, event-driven patterns, and privacy-safe data flows. Background spans fintech-adjacent, healthcare, and telecom domains, with consistent attention to reliability, scalability, and customer trust.",
+  "education": [
+    {
+      "institution": "Malek Ashtar University of Technology",
+      "degree": "Master of Engineering (MEng), Telecommunications Engineering",
+      "period": "2011 – 2013"
+    },
+    {
+      "institution": "Malek Ashtar University of Technology",
+      "degree": "Master of Social Science, Telecommunications Engineering",
+      "period": ""
+    },
+    {
+      "institution": "Urmia University",
+      "degree": "Bachelor of Science, Telecommunications Engineering",
+      "period": "2005 – 2010"
+    }
+  ]
+}
