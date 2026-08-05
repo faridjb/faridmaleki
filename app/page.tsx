@@ -60,16 +60,6 @@ export default function Home() {
       <div className="relative overflow-hidden" data-scroll-section="">
         <div
           aria-hidden
-          className="hero-ai-pattern pointer-events-none absolute inset-0 -z-10 opacity-[0.22] dark:opacity-[0.34]"
-          style={{
-            maskImage:
-              'radial-gradient(ellipse 80% 70% at 70% 35%, black 10%, transparent 72%), radial-gradient(ellipse 70% 55% at 50% 0%, black, transparent)',
-            WebkitMaskImage:
-              'radial-gradient(ellipse 80% 70% at 70% 35%, black 10%, transparent 72%), radial-gradient(ellipse 70% 55% at 50% 0%, black, transparent)',
-          }}
-        />
-        <div
-          aria-hidden
           className="pointer-events-none absolute inset-x-0 top-[-12rem] -z-10 h-[32rem] opacity-[0.1] blur-3xl"
           style={{ background: 'radial-gradient(closest-side, var(--accent), transparent)' }}
         />
@@ -93,7 +83,6 @@ export default function Home() {
 
                 {hasPhoto && (
                   <div className="hero-photo relative mx-auto w-[min(70vw,240px)] shrink-0 sm:mx-0 sm:w-[220px] md:w-[260px] lg:w-[300px] xl:w-[340px]">
-                    <div aria-hidden className="hero-photo-pattern" />
                     <div className="hero-photo-mask">
                       <Image
                         src={withBasePath(siteConfig.photoPath)}

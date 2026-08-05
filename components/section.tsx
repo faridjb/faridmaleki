@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
+import { motifForSection } from '@/lib/section-motif';
+import { SectionPattern } from '@/components/section-pattern';
 
 interface SectionProps {
   eyebrow?: string;
@@ -15,6 +17,7 @@ interface SectionProps {
 /**
  * Shared section wrapper: eyebrow label + heading + optional description,
  * clamped to the site's content measure with consistent vertical rhythm.
+ * Carries a soft local pattern motif that eases in/out with the section.
  */
 export function Section({
   eyebrow,
@@ -26,13 +29,20 @@ export function Section({
 }: SectionProps) {
   const Heading = as;
   const isScrollSubject = Boolean(eyebrow || heading);
+  const motif = motifForSection(`${eyebrow ?? ''}|${heading ?? ''}`);
+
   return (
     <section
-      className={cn('mx-auto w-full max-w-5xl px-6 py-24 sm:py-32', className)}
+      className={cn(
+        'relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:py-32',
+        className
+      )}
       data-scroll-section={isScrollSubject ? '' : undefined}
     >
+      {isScrollSubject && <SectionPattern motif={motif} />}
+
       {(eyebrow || heading || description) && (
-        <div className="mb-12 max-w-2xl">
+        <div className="relative mb-12 max-w-2xl">
           {eyebrow && (
             <p className="text-accent mb-3 font-mono text-xs tracking-widest uppercase">
               {eyebrow}
@@ -46,7 +56,7 @@ export function Section({
           {description && <p className="text-muted-foreground mt-4 text-base">{description}</p>}
         </div>
       )}
-      {children}
+      <div className="relative">{children}</div>
     </section>
   );
 }

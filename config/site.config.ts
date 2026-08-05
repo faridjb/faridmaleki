@@ -25,6 +25,8 @@ export interface SiteConfig {
   homeStoryCta: { label: string; href: string };
   /** Framer spring used by the site-wide scroll-tone atmosphere. */
   scrollAtmosphere: { springStiffness: number; springDamping: number };
+  /** Framer spring used by site-wide scroll-morphing background patterns. */
+  scrollPatterns: { springStiffness: number; springDamping: number };
   nav: NavItem[];
 }
 
@@ -47,6 +49,10 @@ export const siteConfig: SiteConfig = {
   scrollAtmosphere: {
     springStiffness: Number(process.env.NEXT_PUBLIC_SCROLL_ATMOSPHERE_STIFFNESS ?? 90),
     springDamping: Number(process.env.NEXT_PUBLIC_SCROLL_ATMOSPHERE_DAMPING ?? 28),
+  },
+  scrollPatterns: {
+    springStiffness: Number(process.env.NEXT_PUBLIC_SCROLL_PATTERNS_STIFFNESS ?? 60),
+    springDamping: Number(process.env.NEXT_PUBLIC_SCROLL_PATTERNS_DAMPING ?? 32),
   },
   nav: [
     { href: '/', label: 'Home', enabled: true },

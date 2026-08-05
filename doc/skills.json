@@ -1,21 +1,84 @@
 {
-  "topSkills": ["Model Context Protocol (MCP)", "Prompt Engineering", "Product Development"],
+  "topSkills": [
+    "End-to-End AI Solution Design",
+    "Multi-Agent Systems Architecture",
+    "Production RAG Systems",
+    "Semantic Matching & Recommendations",
+    "Vector Search & Hybrid Retrieval",
+    "Product Development",
+    "Model Context Protocol (MCP)",
+    "Agentic AI Solutions"
+  ],
   "categories": [
     {
-      "name": "Agent Frameworks & Orchestration",
-      "skills": ["LangGraph", "LangChain", "Hermes Agent", "OpenClaw", "Temporal.io", "Flowise", "AnythingLLM", "MCP"]
+      "name": "Agentic Systems & Architecture",
+      "skills": [
+        "Agentic AI Solutions",
+        "Multi-Agent Systems Architecture",
+        "End-to-End AI Solution Design",
+        "AI System Architecture",
+        "LangGraph",
+        "LangChain",
+        "Hermes Agent",
+        "OpenClaw",
+        "Temporal.io",
+        "Event-Driven AI Workflows",
+        "Flowise",
+        "AnythingLLM",
+        "MCP"
+      ]
+    },
+    {
+      "name": "Conversational & Voice AI",
+      "skills": [
+        "Conversational AI",
+        "Voice AI (ASR/TTS)",
+        "On-Premise Voice Agents",
+        "Intent Detection",
+        "Tool / API Binding for Agents"
+      ]
+    },
+    {
+      "name": "RAG, Search & Recommendations",
+      "skills": [
+        "Production RAG Systems",
+        "Vector Search & Hybrid Retrieval",
+        "Semantic Matching & Recommendations",
+        "Qdrant",
+        "Vespa.ai",
+        "Elasticsearch",
+        "Embeddings",
+        "Sparse Vectors",
+        "Retrieval Evaluation"
+      ]
+    },
+    {
+      "name": "Reliability, Guardrails & Compliance",
+      "skills": [
+        "Guardrails & Output Validation",
+        "Privacy-Safe / On-Prem AI",
+        "Prompt Optimization",
+        "Compliance-Grade Document AI"
+      ]
     },
     {
       "name": "LLM Providers",
       "skills": ["OpenAI", "Anthropic (Claude)", "Google Gemini", "Mistral"]
     },
     {
-      "name": "Vector Search & Retrieval",
-      "skills": ["Qdrant", "Vespa.ai", "Elasticsearch"]
-    },
-    {
-      "name": "Infrastructure & MLOps",
-      "skills": ["Docker", "Kubernetes", "Prometheus", "Grafana", "Loki", "GCP", "Azure", "Nginx"]
+      "name": "Infrastructure & LLMOps",
+      "skills": [
+        "LLMOps & Observability",
+        "Docker",
+        "Kubernetes",
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "Nginx",
+        "Model Pool Architecture",
+        "GCP",
+        "Azure"
+      ]
     },
     {
       "name": "Development",
@@ -23,7 +86,13 @@
     },
     {
       "name": "Data & Analysis",
-      "skills": ["Time-series analysis", "ETL pipelines", "NLP", "Machine Learning"]
+      "skills": [
+        "Time-Series Anomaly Detection",
+        "Time-series analysis",
+        "ETL pipelines",
+        "NLP",
+        "Machine Learning"
+      ]
     }
   ],
   "languages": [

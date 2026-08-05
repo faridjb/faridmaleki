@@ -18,7 +18,7 @@ export function Footer() {
   ].filter(Boolean) as { href: string; label: string; Icon: typeof MailIcon }[];
 
   return (
-    <footer className="border-border border-t">
+    <footer className="border-border bg-background/70 border-t backdrop-blur-md">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-center sm:justify-between">
         <div className="text-muted-foreground flex items-center gap-2">
           <Logo className="text-accent size-6" />
