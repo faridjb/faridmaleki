@@ -42,24 +42,16 @@ export default function AboutPage() {
 
   return (
     <main>
-      <Section eyebrow="About">
-        <Reveal>
-          <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
-            About {resume.name}
-          </h1>
-        </Reveal>
-      </Section>
-
       {/* Story */}
       {story && (
-        <Section eyebrow="Story" heading="How I got here">
+        <Section eyebrow="Story" heading="How I got here" as="h1">
           <Reveal>
             <div className="max-w-2xl">
               <Markdown
                 components={{
                   p: ({ ...props }) => (
                     <p
-                      className="text-muted-foreground mb-6 text-base leading-relaxed last:mb-0"
+                      className="text-muted-foreground mb-6 text-base leading-relaxed text-justify hyphens-auto last:mb-0 [text-align-last:left]"
                       {...props}
                     />
                   ),

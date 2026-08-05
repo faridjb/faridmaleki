@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRightIcon, DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react';
+import { ArrowRightIcon, MailIcon, MapPinIcon } from 'lucide-react';
 
 import { siteConfig } from '@/config/site.config';
 import {
@@ -53,45 +53,68 @@ export default function Home() {
   const hasPhoto = publicAssetExists(photoRelative);
 
   return (
-    <main>
+    <>
       <PersonJsonLd />
 
       {/* Hero */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden" data-scroll-section="">
         <div
           aria-hidden
-          className="hero-ai-pattern pointer-events-none absolute inset-0 -z-10 opacity-[0.18] dark:opacity-[0.28]"
+          className="hero-ai-pattern pointer-events-none absolute inset-0 -z-10 opacity-[0.22] dark:opacity-[0.34]"
           style={{
-            maskImage: 'radial-gradient(ellipse 70% 65% at 50% 0%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 70% 65% at 50% 0%, black, transparent)',
+            maskImage:
+              'radial-gradient(ellipse 80% 70% at 70% 35%, black 10%, transparent 72%), radial-gradient(ellipse 70% 55% at 50% 0%, black, transparent)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse 80% 70% at 70% 35%, black 10%, transparent 72%), radial-gradient(ellipse 70% 55% at 50% 0%, black, transparent)',
           }}
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[-12rem] -z-10 h-[32rem] opacity-[0.14] blur-3xl"
+          className="pointer-events-none absolute inset-x-0 top-[-12rem] -z-10 h-[32rem] opacity-[0.1] blur-3xl"
           style={{ background: 'radial-gradient(closest-side, var(--accent), transparent)' }}
         />
         <Section>
           <Reveal>
-            <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-14">
-              <div className="min-w-0 flex-1">
+            <div className="flex flex-col gap-8 lg:gap-10">
+              <div className="max-w-3xl">
                 <p className="text-accent font-mono text-xs tracking-widest uppercase">
                   {resume.title}
                 </p>
                 <h1 className="font-heading text-foreground mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
                   {resume.name}
                 </h1>
-                <p className="text-muted-foreground mt-6 max-w-2xl text-lg sm:text-xl">
-                  {resume.tagline}
-                </p>
-                <p className="text-muted-foreground mt-6 max-w-2xl text-base leading-relaxed sm:text-lg">
+                <p className="text-muted-foreground mt-6 text-lg sm:text-xl">{resume.tagline}</p>
+              </div>
+
+              <div className="flex flex-col items-stretch gap-8 sm:flex-row sm:items-start sm:gap-8 lg:gap-12">
+                <p className="text-muted-foreground min-w-0 flex-1 text-base leading-relaxed text-justify hyphens-auto sm:text-lg [text-align-last:left]">
                   {resume.summary}
                 </p>
-                <p className="text-muted-foreground mt-6 flex items-center gap-2 font-mono text-sm">
+
+                {hasPhoto && (
+                  <div className="hero-photo relative mx-auto w-[min(70vw,240px)] shrink-0 sm:mx-0 sm:w-[220px] md:w-[260px] lg:w-[300px] xl:w-[340px]">
+                    <div aria-hidden className="hero-photo-pattern" />
+                    <div className="hero-photo-mask">
+                      <Image
+                        src={withBasePath(siteConfig.photoPath)}
+                        alt={`${resume.name} — portrait photo`}
+                        width={680}
+                        height={680}
+                        priority
+                        sizes="(max-width: 640px) 70vw, (max-width: 1024px) 260px, 340px"
+                        className="select-none"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <p className="text-muted-foreground flex items-center gap-2 font-mono text-sm">
                   <MapPinIcon className="size-4 shrink-0" aria-hidden />
                   {resume.location}
                 </p>
-                <div className="mt-10 flex flex-wrap gap-4">
+                <div className="mt-8 flex flex-wrap gap-4">
                   <Button size="lg" render={<Link href="/projects" />}>
                     View Projects
                     <ArrowRightIcon />
@@ -99,42 +122,13 @@ export default function Home() {
                   <Button
                     size="lg"
                     variant="outline"
-                    render={
-                      <Link
-                        href={siteConfig.resumePdfPath}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      />
-                    }
+                    render={<Link href={siteConfig.homeStoryCta.href} />}
                   >
-                    Download Resume
-                    <DownloadIcon />
+                    {siteConfig.homeStoryCta.label}
+                    <ArrowRightIcon />
                   </Button>
                 </div>
               </div>
-
-              {hasPhoto && (
-                <div className="relative mx-auto w-full max-w-[280px] shrink-0 sm:max-w-[320px] lg:mx-0 lg:max-w-[380px]">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 -z-10 scale-110 opacity-50 blur-2xl"
-                    style={{
-                      background:
-                        'radial-gradient(circle at 50% 45%, color-mix(in oklab, var(--accent) 35%, transparent), transparent 70%)',
-                    }}
-                  />
-                  <div className="hero-photo-mask">
-                    <Image
-                      src={withBasePath(siteConfig.photoPath)}
-                      alt={`${resume.name} — portrait photo`}
-                      width={400}
-                      height={400}
-                      priority
-                      className="aspect-square w-full object-cover"
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           </Reveal>
         </Section>
@@ -290,6 +284,6 @@ export default function Home() {
           </Card>
         </Reveal>
       </Section>
-    </main>
+    </>
   );
 }

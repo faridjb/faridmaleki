@@ -8,6 +8,7 @@ import { absoluteUrl } from '@/lib/seo';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
+import { ScrollAtmosphere } from '@/components/scroll-atmosphere';
 import { siteConfig } from '@/config/site.config';
 
 const fontSans = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
@@ -72,11 +73,13 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           enableSystem={false}
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          <ScrollAtmosphere>
+            <div className="relative z-10 flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </ScrollAtmosphere>
         </ThemeProvider>
       </body>
     </html>

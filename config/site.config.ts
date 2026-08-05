@@ -21,6 +21,10 @@ export interface SiteConfig {
   ogImagePath: string;
   /** Portrait used on the home hero — path relative to public/. */
   photoPath: string;
+  /** Secondary hero CTA — story link into /about. */
+  homeStoryCta: { label: string; href: string };
+  /** Framer spring used by the site-wide scroll-tone atmosphere. */
+  scrollAtmosphere: { springStiffness: number; springDamping: number };
   nav: NavItem[];
 }
 
@@ -36,6 +40,14 @@ export const siteConfig: SiteConfig = {
   resumePdfPath: process.env.NEXT_PUBLIC_RESUME_PDF ?? '/documents/resume.pdf',
   ogImagePath: process.env.NEXT_PUBLIC_OG_IMAGE ?? '/og-image.png',
   photoPath: process.env.NEXT_PUBLIC_PHOTO_PATH ?? '/images/photo-square.jpg',
+  homeStoryCta: {
+    label: process.env.NEXT_PUBLIC_HOME_STORY_CTA_LABEL ?? 'Read my story',
+    href: process.env.NEXT_PUBLIC_HOME_STORY_CTA_HREF ?? '/about',
+  },
+  scrollAtmosphere: {
+    springStiffness: Number(process.env.NEXT_PUBLIC_SCROLL_ATMOSPHERE_STIFFNESS ?? 90),
+    springDamping: Number(process.env.NEXT_PUBLIC_SCROLL_ATMOSPHERE_DAMPING ?? 28),
+  },
   nav: [
     { href: '/', label: 'Home', enabled: true },
     { href: '/about', label: 'About', enabled: true },

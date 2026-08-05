@@ -182,14 +182,164 @@
   }
 }
 
-/* Soft vignette fade — photo dissolves into the page instead of a hard crop edge */
-.hero-photo-mask {
-  -webkit-mask-image: radial-gradient(
-    ellipse 72% 78% at 50% 42%,
-    #000 42%,
-    transparent 78%
+/*
+ * Site-wide scroll atmosphere. --scroll-tone is 0→1 (set by ScrollAtmosphere).
+ * Mixes accent near the top / early headings and accent-alt as you move down sections.
+ */
+.scroll-atmosphere-root {
+  --scroll-tone: 0;
+}
+
+.scroll-atmosphere-base {
+  background: linear-gradient(
+    180deg,
+    color-mix(
+      in oklab,
+      var(--accent) calc((1 - var(--scroll-tone)) * 8%),
+      var(--bg-primary)
+    )
+      0%,
+    color-mix(in oklab, var(--accent-alt) calc(var(--scroll-tone) * 10%), var(--bg-primary)) 55%,
+    color-mix(in oklab, var(--accent) calc(var(--scroll-tone) * 4%), var(--bg-primary)) 100%
   );
-  mask-image: radial-gradient(ellipse 72% 78% at 50% 42%, #000 42%, transparent 78%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-atmosphere-base {
+    background: var(--bg-primary);
+  }
+}
+
+/*
+ * Option 1 — dissolve into pattern.
+ * Face stays readable; edges open early so the node-graph underlay reads through.
+ */
+.hero-photo {
+  --hero-photo-mask-x: 50%;
+  --hero-photo-mask-y: 36%;
+  --hero-photo-mask-w: 100%;
+  --hero-photo-mask-h: 100%;
+  /* Solid core stays compact; long soft ramp = deeper dissolve into the pattern */
+  --hero-photo-solid: 38%;
+  --hero-photo-mid: 58%;
+  --hero-photo-soft: 78%;
+  --hero-photo-edge: 100%;
+}
+
+.hero-photo-pattern {
+  position: absolute;
+  inset: -18%;
+  z-index: 0;
+  opacity: 0.34;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23888' stroke-width='0.75' opacity='0.55'%3E%3Cpath d='M18 22L48 12L78 22M18 22L30 52M78 22L66 52M30 52L48 72L66 52M30 52L48 40L66 52M48 12L48 40M48 72L48 84'/%3E%3C/g%3E%3Cg fill='%23888'%3E%3Ccircle cx='18' cy='22' r='2.2'/%3E%3Ccircle cx='48' cy='12' r='2.2'/%3E%3Ccircle cx='78' cy='22' r='2.2'/%3E%3Ccircle cx='30' cy='52' r='2.2'/%3E%3Ccircle cx='48' cy='40' r='2.2'/%3E%3Ccircle cx='66' cy='52' r='2.2'/%3E%3Ccircle cx='48' cy='72' r='2.2'/%3E%3Ccircle cx='48' cy='84' r='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 78% 78% at 50% 42%,
+    transparent 20%,
+    #000 48%,
+    #000 70%,
+    transparent 92%
+  );
+  mask-image: radial-gradient(
+    ellipse 78% 78% at 50% 42%,
+    transparent 20%,
+    #000 48%,
+    #000 70%,
+    transparent 92%
+  );
+}
+
+.dark .hero-photo-pattern {
+  opacity: 0.48;
+}
+
+.hero-photo-mask {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse var(--hero-photo-mask-w) var(--hero-photo-mask-h) at var(--hero-photo-mask-x)
+        var(--hero-photo-mask-y),
+      #000 0%,
+      #000 var(--hero-photo-solid),
+      rgba(0, 0, 0, 0.72) var(--hero-photo-mid),
+      rgba(0, 0, 0, 0.28) var(--hero-photo-soft),
+      transparent var(--hero-photo-edge)
+    ),
+    linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 48%,
+      rgba(0, 0, 0, 0.55) 72%,
+      transparent 100%
+    );
+  mask-image:
+    radial-gradient(
+      ellipse var(--hero-photo-mask-w) var(--hero-photo-mask-h) at var(--hero-photo-mask-x)
+        var(--hero-photo-mask-y),
+      #000 0%,
+      #000 var(--hero-photo-solid),
+      rgba(0, 0, 0, 0.72) var(--hero-photo-mid),
+      rgba(0, 0, 0, 0.28) var(--hero-photo-soft),
+      transparent var(--hero-photo-edge)
+    ),
+    linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 48%,
+      rgba(0, 0, 0, 0.55) 72%,
+      transparent 100%
+    );
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.hero-photo-mask img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+@media (max-width: 639px) {
+  .hero-photo {
+    --hero-photo-solid: 42%;
+    --hero-photo-mid: 62%;
+    --hero-photo-soft: 82%;
+    --hero-photo-mask-y: 38%;
+  }
+
+  .hero-photo-pattern {
+    inset: -14%;
+    opacity: 0.28;
+    background-size: 56px 56px;
+  }
+
+  .dark .hero-photo-pattern {
+    opacity: 0.4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-photo {
+    --hero-photo-solid: 34%;
+    --hero-photo-mid: 54%;
+    --hero-photo-soft: 74%;
+    --hero-photo-mask-y: 34%;
+  }
+
+  .hero-photo-pattern {
+    inset: -22%;
+    background-size: 80px 80px;
+  }
 }
 
 /* Minimal node-graph tile — nods to agentic / LLM orchestration without competing with copy */

@@ -416,7 +416,7 @@ doc/ via the lib/content.ts loaders — no hardcoded copy, no raw JSON imports.
 
 Build app/page.tsx with these sections in order, each wrapped in Section + Reveal:
 
-1. Hero — name, title, and tagline from getResume() ("Farid J. Maleki", "Senior Data Scientist
+1. Hero — name, title, and tagline from getResume() ("Farid Maleki", "Senior Data Scientist
    / AI Engineer", "Driving AI Transformation — Conversational AI, Agentic Orchestration,
    LLMOps"), the location line, and two CTAs: "View Projects" (/projects) and "Download
    Resume" (siteConfig.resumePdfPath). Subtle dot-grid or faint radial accent gradient

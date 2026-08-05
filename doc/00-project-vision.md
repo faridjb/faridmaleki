@@ -1,7 +1,7 @@
 # 00 — Project Vision
 
 ## Who this is for
-Farid J. Maleki — Senior Data Scientist / AI Engineer (conversational AI, agentic orchestration,
+Farid Maleki — Senior Data Scientist / AI Engineer (conversational AI, agentic orchestration,
 LLMOps, LLM-integrated backends). 6+ years across telecom, fintech-adjacent, compliance/finance,
 and pharma. Currently: MCI R&D Center. Based in the Netherlands, open to EU relocation
 (incl. Frankfurt) and worldwide remote/hybrid/on-site.

@@ -9,7 +9,7 @@ interface SectionProps {
   children?: ReactNode;
   className?: string;
   /** Set false for sections that shouldn't render a <h2> (e.g. the hero, which owns the page's h1). */
-  as?: 'h2' | 'h3';
+  as?: 'h1' | 'h2' | 'h3';
 }
 
 /**
@@ -25,8 +25,12 @@ export function Section({
   as = 'h2',
 }: SectionProps) {
   const Heading = as;
+  const isScrollSubject = Boolean(eyebrow || heading);
   return (
-    <section className={cn('mx-auto w-full max-w-5xl px-6 py-24 sm:py-32', className)}>
+    <section
+      className={cn('mx-auto w-full max-w-5xl px-6 py-24 sm:py-32', className)}
+      data-scroll-section={isScrollSubject ? '' : undefined}
+    >
       {(eyebrow || heading || description) && (
         <div className="mb-12 max-w-2xl">
           {eyebrow && (

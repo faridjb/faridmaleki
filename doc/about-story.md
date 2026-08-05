@@ -1,4 +1,4 @@
-Hi, I'm Farid Jabbari Maleki — better known as Farid Maleki. My academic background is in telecommunications and telecom systems design. But after about seven years working in that field, I realized where my real interest lay: automating processes, building intelligent systems, and detecting patterns using AI and machine learning.
+Hi, I'm Farid Maleki. My academic background is in telecommunications and telecom systems design. But after about seven years working in that field, I realized where my real interest lay: automating processes, building intelligent systems, and detecting patterns using AI and machine learning.
 
 So I taught myself — through the growing pool of online courses and my own research — and steadily built expertise in this new direction. My first real foray was research into speech emotion recognition, and from there I moved into time-series analysis, which became the formal start of my AI career at Rightel.
 
