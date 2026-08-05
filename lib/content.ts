@@ -91,6 +91,122 @@ export function isTodo(value: string | undefined): boolean {
   return value.includes('TODO');
 }
 
+export interface Metric {
+  /** The headline figure, e.g. "70%", "6 weeks → 30 minutes". */
+  value: string;
+  /** Short supporting label, e.g. "Latency reduction (3x faster)". */
+  caption: string;
+}
+
+/** Matches the measurable fragment inside a free-text result string. */
+const METRIC_FRAGMENT =
+  /(\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?)\s*(?:→|->)\s*\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?)|under\s+\d+\s*(?:hours?|hrs?|minutes?|mins?)|\d+%\+?)/i;
+
+const EDGE_STOPWORDS = [
+  /\s+reduced to$/i,
+  /\s+cut to$/i,
+  /\s+down to$/i,
+  /\s+reduced$/i,
+  /\s+to$/i,
+  /\s+from$/i,
+  /^to\s+/i,
+  /^from\s+/i,
+  /^of\s+/i,
+  /^up to\s+/i,
+];
+
+function trimStopwords(text: string): string {
+  let result = text.replace(/\s{2,}/g, ' ').trim();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pattern of EDGE_STOPWORDS) {
+      if (pattern.test(result)) {
+        result = result.replace(pattern, '').trim();
+        changed = true;
+      }
+    }
+  }
+  return result;
+}
+
+function capitalize(text: string): string {
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+}
+
+/**
+ * Splits a free-text result string (e.g. "70% latency reduction (3x faster)") into a
+ * headline value ("70%") and a short caption ("Latency reduction (3x faster)") for
+ * MetricStat. No metric copy is ever authored by hand — it's always derived from the
+ * `results` strings already in doc/projects.json.
+ */
+export function splitMetric(result: string): Metric {
+  const match = result.match(METRIC_FRAGMENT);
+  if (!match || match.index === undefined) {
+    return { value: result, caption: '' };
+  }
+  const rest = result.slice(0, match.index) + result.slice(match.index + match[0].length);
+  const caption = capitalize(trimStopwords(rest));
+  return { value: match[0], caption: caption || result };
+}
+
+/**
+ * Impact-strength tiers, ordered by what a technical hiring audience weighs most:
+ * an order-of-magnitude time compression outranks a near-complete accuracy figure,
+ * which outranks a reliability/MTTR figure, which outranks a latency figure, which
+ * outranks any other measured percentage.
+ */
+function metricTier(result: string): number {
+  if (/→|->/.test(result)) return 6;
+  const percentMatch = result.match(/(\d+)%/);
+  if (percentMatch && Number(percentMatch[1]) >= 90) return 5;
+  if (/mttr|under\s+\d+\s*(?:hours?|hrs?|minutes?|mins?)/i.test(result)) return 4;
+  if (/latency/i.test(result)) return 3;
+  if (percentMatch) return 2;
+  return 1;
+}
+
+function metricMagnitude(result: string): number {
+  const match = result.match(/(\d+)/);
+  return match ? Number(match[1]) : 0;
+}
+
+function compareByImpact(a: string, b: string): number {
+  const tierDiff = metricTier(b) - metricTier(a);
+  if (tierDiff !== 0) return tierDiff;
+  return metricMagnitude(b) - metricMagnitude(a);
+}
+
+export interface ImpactMetric extends Metric {
+  company: string;
+  projectId: string;
+}
+
+/**
+ * Ranks every `results` entry across all non-placeholder projects by impact strength
+ * and returns the strongest `count` — the home page's impact strip pulls from this
+ * rather than any hardcoded copy.
+ */
+export function getTopImpactMetrics(count = 4): ImpactMetric[] {
+  return getProjects()
+    .filter((project) => !isTodo(project.title))
+    .flatMap((project) =>
+      project.results.map((result) => ({
+        result,
+        company: project.company,
+        projectId: project.id,
+      }))
+    )
+    .sort((a, b) => compareByImpact(a.result, b.result))
+    .slice(0, count)
+    .map(({ result, company, projectId }) => ({ ...splitMetric(result), company, projectId }));
+}
+
+/** The single strongest `results` entry for one project, ranked the same way as getTopImpactMetrics. */
+export function getStrongestResult(project: Project): string | undefined {
+  return [...project.results].sort(compareByImpact)[0];
+}
+
 /** Drops the internal `confidentiality` note so it can never reach a component. */
 export function stripInternal(project: Project): PublicProject {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally discarded
