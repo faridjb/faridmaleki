@@ -6,11 +6,11 @@ import { DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react';
 import { siteConfig } from '@/config/site.config';
 import { getResume } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
-import { formatDisplayUrl } from '@/lib/utils';
+import { cn, formatDisplayUrl } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { GithubIcon, LinkedinIcon } from '@/components/icons';
 
 interface ContactChannel {
@@ -106,15 +106,15 @@ export default function ContactPage() {
 
         <Reveal index={channels.length}>
           <div className="mt-16">
-            <Button
-              size="lg"
-              render={
-                <Link href={siteConfig.resumePdfPath} target="_blank" rel="noopener noreferrer" />
-              }
+            <Link
+              href={siteConfig.resumePdfPath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ size: 'lg' }))}
             >
               Download Resume
               <DownloadIcon />
-            </Button>
+            </Link>
           </div>
         </Reveal>
       </Section>

@@ -15,14 +15,14 @@ import {
   stripInternal,
 } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
-import { withBasePath } from '@/lib/utils';
+import { cn, withBasePath } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
 import { TechBadge } from '@/components/tech-badge';
 import { MetricStat } from '@/components/metric-stat';
 import { ProjectCard } from '@/components/project-card';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { GithubIcon, LinkedinIcon } from '@/components/icons';
 import { PersonJsonLd } from '@/components/person-json-ld';
 
@@ -104,18 +104,17 @@ export default function Home() {
                   {resume.location}
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">
-                  <Button size="lg" render={<Link href="/projects" />}>
+                  <Link href="/projects" className={cn(buttonVariants({ size: 'lg' }))}>
                     View Projects
                     <ArrowRightIcon />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    render={<Link href={siteConfig.homeStoryCta.href} />}
+                  </Link>
+                  <Link
+                    href={siteConfig.homeStoryCta.href}
+                    className={cn(buttonVariants({ size: 'lg', variant: 'outline' }))}
                   >
                     {siteConfig.homeStoryCta.label}
                     <ArrowRightIcon />
-                  </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -199,10 +198,10 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-8">
-            <Button variant="outline" render={<Link href="/experience" />}>
+            <Link href="/experience" className={cn(buttonVariants({ variant: 'outline' }))}>
               View full experience
               <ArrowRightIcon />
-            </Button>
+            </Link>
           </div>
         </Section>
       )}
@@ -251,24 +250,31 @@ export default function Home() {
               production AI roles.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button variant="outline" render={<a href={`mailto:${resume.email}`} />}>
+              <a
+                href={`mailto:${resume.email}`}
+                className={cn(buttonVariants({ variant: 'outline' }))}
+              >
                 <MailIcon />
                 Email
-              </Button>
-              <Button
-                variant="outline"
-                render={<a href={resume.linkedin} target="_blank" rel="noopener noreferrer" />}
+              </a>
+              <a
+                href={resume.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: 'outline' }))}
               >
                 <LinkedinIcon />
                 LinkedIn
-              </Button>
-              <Button
-                variant="outline"
-                render={<a href={resume.github} target="_blank" rel="noopener noreferrer" />}
+              </a>
+              <a
+                href={resume.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: 'outline' }))}
               >
                 <GithubIcon />
                 GitHub
-              </Button>
+              </a>
             </div>
           </Card>
         </Reveal>
