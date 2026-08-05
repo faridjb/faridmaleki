@@ -1,18 +1,34 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRightIcon } from 'lucide-react';
 
 import { getDiagram, getProjects, isTodo, stripInternal } from '@/lib/content';
+import { buildMetadata } from '@/lib/seo';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
 import { ArchitectureDiagram } from '@/components/architecture-diagram';
 
-export default function ArchitecturePage() {
-  const diagrams = getProjects()
+/** Same eligibility filter the page body uses — kept in one place so metadata and content never disagree on the count. */
+function getArchitectureProjects() {
+  return getProjects()
     .filter((project) => !isTodo(project.title) && !isTodo(project.architectureDiagram))
     .map(stripInternal)
     .map((project) => ({ project, definition: getDiagram(project.architectureDiagram) }))
     .filter(({ definition }) => definition.length > 0);
+}
+
+export function generateMetadata(): Metadata {
+  const count = getArchitectureProjects().length;
+  return buildMetadata({
+    title: 'Architecture',
+    description: `The pipelines and orchestration layers behind ${count} shipped case studies — from ingestion through inference to the interfaces people actually use.`,
+    path: '/architecture',
+  });
+}
+
+export default function ArchitecturePage() {
+  const diagrams = getArchitectureProjects();
 
   return (
     <main>

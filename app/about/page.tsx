@@ -1,13 +1,24 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Markdown from 'react-markdown';
 
 import { getAboutStory, getResume, publicAssetExists } from '@/lib/content';
+import { buildMetadata } from '@/lib/seo';
 import { withBasePath } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
 
 const PHOTO_PATH = 'images/photo-square.png';
+
+export function generateMetadata(): Metadata {
+  const resume = getResume();
+  return buildMetadata({
+    title: 'About',
+    description: resume.summary,
+    path: '/about',
+  });
+}
 
 const PHILOSOPHY = [
   {

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
@@ -6,10 +7,12 @@ import {
   getDiagram,
   getProject,
   getProjects,
+  getStrongestResult,
   isTodo,
   splitMetric,
   stripInternal,
 } from '@/lib/content';
+import { buildMetadata } from '@/lib/seo';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
@@ -22,6 +25,32 @@ export function generateStaticParams() {
   return getProjects()
     .filter((project) => !isTodo(project.title))
     .map((project) => ({ id: project.id }));
+}
+
+export async function generateMetadata({ params }: PageProps<'/projects/[id]'>): Promise<Metadata> {
+  const { id } = await params;
+  const rawProject = getProject(id);
+
+  if (!rawProject || isTodo(rawProject.title)) {
+    return buildMetadata({
+      title: 'Project not found',
+      description: 'This case study is not available.',
+      path: `/projects/${id}`,
+    });
+  }
+
+  const project = stripInternal(rawProject);
+  const strongestResult = getStrongestResult(project.results);
+  const overview = !isTodo(project.overview) ? project.overview : '';
+  // Leads with the measured outcome (e.g. "70% latency reduction...") where one exists,
+  // rather than burying it after the overview — that's what a recruiter scans for first.
+  const description = [strongestResult, overview].filter(Boolean).join(' — ') || project.title;
+
+  return buildMetadata({
+    title: !isTodo(project.company) ? `${project.title} — ${project.company}` : project.title,
+    description,
+    path: `/projects/${project.id}`,
+  });
 }
 
 export default async function ProjectPage({ params }: PageProps<'/projects/[id]'>) {

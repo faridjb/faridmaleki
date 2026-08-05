@@ -1,9 +1,12 @@
+import type { Metadata } from 'next';
+
 import {
   getExperience,
   getExperienceDomains,
   getResume,
   getYearsOfExperience,
 } from '@/lib/content';
+import { buildMetadata } from '@/lib/seo';
 import { joinWithAnd } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
@@ -11,6 +14,16 @@ import { Card } from '@/components/card';
 import { TechBadge } from '@/components/tech-badge';
 import { Timeline, TimelineItem } from '@/components/timeline';
 import { EmphasizedText } from '@/components/emphasized-text';
+
+export function generateMetadata(): Metadata {
+  const years = getYearsOfExperience(getResume());
+  const domains = getExperienceDomains(getExperience());
+  return buildMetadata({
+    title: 'Experience',
+    description: `${years} years shipping production AI systems across ${joinWithAnd(domains)}.`,
+    path: '/experience',
+  });
+}
 
 export default function ExperiencePage() {
   const resume = getResume();

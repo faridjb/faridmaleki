@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRightIcon, DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react';
 
@@ -11,6 +12,7 @@ import {
   isTodo,
   stripInternal,
 } from '@/lib/content';
+import { buildMetadata } from '@/lib/seo';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
@@ -19,10 +21,21 @@ import { MetricStat } from '@/components/metric-stat';
 import { ProjectCard } from '@/components/project-card';
 import { Button } from '@/components/ui/button';
 import { GithubIcon, LinkedinIcon } from '@/components/icons';
+import { PersonJsonLd } from '@/components/person-json-ld';
 
 const IMPACT_METRIC_COUNT = 4;
 const FEATURED_PROJECT_COUNT = 3;
 const RECENT_EXPERIENCE_COUNT = 2;
+
+export function generateMetadata(): Metadata {
+  const resume = getResume();
+  return buildMetadata({
+    title: resume.name,
+    description: `${resume.title} — ${resume.tagline}`,
+    path: '/',
+    absoluteTitle: true,
+  });
+}
 
 export default function Home() {
   const resume = getResume();
@@ -36,6 +49,8 @@ export default function Home() {
 
   return (
     <main>
+      <PersonJsonLd />
+
       {/* Hero */}
       <div className="relative overflow-hidden">
         <div

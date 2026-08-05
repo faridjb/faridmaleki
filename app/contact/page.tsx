@@ -1,9 +1,11 @@
 import type { ComponentType, SVGProps } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react';
 
 import { siteConfig } from '@/config/site.config';
 import { getResume } from '@/lib/content';
+import { buildMetadata } from '@/lib/seo';
 import { formatDisplayUrl } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
@@ -17,6 +19,17 @@ interface ContactChannel {
   href: string;
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   external: boolean;
+}
+
+const DESCRIPTION =
+  'Open to conversations with recruiters, hiring managers, and tech leads about production AI roles — reach out directly, no forms in between.';
+
+export function generateMetadata(): Metadata {
+  return buildMetadata({
+    title: 'Contact',
+    description: DESCRIPTION,
+    path: '/contact',
+  });
 }
 
 export default function ContactPage() {
@@ -54,8 +67,7 @@ export default function ContactPage() {
             Let&apos;s talk
           </h1>
           <p className="text-muted-foreground mt-4 max-w-xl text-lg leading-relaxed">
-            Open to conversations with recruiters, hiring managers, and tech leads about production
-            AI roles — reach out directly, no forms in between.
+            {DESCRIPTION}
           </p>
           <p className="text-muted-foreground mt-4 flex items-center gap-2 font-mono text-sm">
             <MapPinIcon className="size-4 shrink-0" aria-hidden />

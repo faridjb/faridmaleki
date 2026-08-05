@@ -18,6 +18,7 @@ export interface SiteConfig {
   basePath: string;
   defaultTheme: ThemeName;
   resumePdfPath: string;
+  ogImagePath: string;
   nav: NavItem[];
 }
 
@@ -31,6 +32,7 @@ export const siteConfig: SiteConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? '/faridmaleki',
   defaultTheme: readTheme(process.env.NEXT_PUBLIC_DEFAULT_THEME, 'dark'),
   resumePdfPath: process.env.NEXT_PUBLIC_RESUME_PDF ?? '/documents/resume.pdf',
+  ogImagePath: process.env.NEXT_PUBLIC_OG_IMAGE ?? '/og-image.png',
   nav: [
     { href: '/', label: 'Home', enabled: true },
     { href: '/about', label: 'About', enabled: true },
