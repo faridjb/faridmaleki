@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRightIcon, DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react';
 
@@ -10,9 +11,11 @@ import {
   getSkills,
   getTopImpactMetrics,
   isTodo,
+  publicAssetExists,
   stripInternal,
 } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
+import { withBasePath } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
@@ -46,6 +49,8 @@ export default function Home() {
     .slice(0, FEATURED_PROJECT_COUNT)
     .map(stripInternal);
   const recentExperience = getExperience().slice(0, RECENT_EXPERIENCE_COUNT);
+  const photoRelative = siteConfig.photoPath.replace(/^\/+/, '');
+  const hasPhoto = publicAssetExists(photoRelative);
 
   return (
     <main>
@@ -55,48 +60,81 @@ export default function Home() {
       <div className="relative overflow-hidden">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-40"
+          className="hero-ai-pattern pointer-events-none absolute inset-0 -z-10 opacity-[0.18] dark:opacity-[0.28]"
           style={{
-            backgroundImage: 'radial-gradient(circle, var(--border) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
-            maskImage: 'radial-gradient(ellipse 60% 60% at 50% 0%, black, transparent)',
+            maskImage: 'radial-gradient(ellipse 70% 65% at 50% 0%, black, transparent)',
+            WebkitMaskImage: 'radial-gradient(ellipse 70% 65% at 50% 0%, black, transparent)',
           }}
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[-12rem] -z-10 h-[32rem] opacity-[0.12] blur-3xl"
+          className="pointer-events-none absolute inset-x-0 top-[-12rem] -z-10 h-[32rem] opacity-[0.14] blur-3xl"
           style={{ background: 'radial-gradient(closest-side, var(--accent), transparent)' }}
         />
         <Section>
           <Reveal>
-            <p className="text-accent font-mono text-xs tracking-widest uppercase">
-              {resume.title}
-            </p>
-            <h1 className="font-heading text-foreground mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-              {resume.name}
-            </h1>
-            <p className="text-muted-foreground mt-6 max-w-2xl text-lg sm:text-xl">
-              {resume.tagline}
-            </p>
-            <p className="text-muted-foreground mt-6 flex items-center gap-2 font-mono text-sm">
-              <MapPinIcon className="size-4 shrink-0" aria-hidden />
-              {resume.location}
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Button size="lg" render={<Link href="/projects" />}>
-                View Projects
-                <ArrowRightIcon />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                render={
-                  <Link href={siteConfig.resumePdfPath} target="_blank" rel="noopener noreferrer" />
-                }
-              >
-                Download Resume
-                <DownloadIcon />
-              </Button>
+            <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-14">
+              <div className="min-w-0 flex-1">
+                <p className="text-accent font-mono text-xs tracking-widest uppercase">
+                  {resume.title}
+                </p>
+                <h1 className="font-heading text-foreground mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                  {resume.name}
+                </h1>
+                <p className="text-muted-foreground mt-6 max-w-2xl text-lg sm:text-xl">
+                  {resume.tagline}
+                </p>
+                <p className="text-muted-foreground mt-6 max-w-2xl text-base leading-relaxed sm:text-lg">
+                  {resume.summary}
+                </p>
+                <p className="text-muted-foreground mt-6 flex items-center gap-2 font-mono text-sm">
+                  <MapPinIcon className="size-4 shrink-0" aria-hidden />
+                  {resume.location}
+                </p>
+                <div className="mt-10 flex flex-wrap gap-4">
+                  <Button size="lg" render={<Link href="/projects" />}>
+                    View Projects
+                    <ArrowRightIcon />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    render={
+                      <Link
+                        href={siteConfig.resumePdfPath}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      />
+                    }
+                  >
+                    Download Resume
+                    <DownloadIcon />
+                  </Button>
+                </div>
+              </div>
+
+              {hasPhoto && (
+                <div className="relative mx-auto w-full max-w-[280px] shrink-0 sm:max-w-[320px] lg:mx-0 lg:max-w-[380px]">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 -z-10 scale-110 opacity-50 blur-2xl"
+                    style={{
+                      background:
+                        'radial-gradient(circle at 50% 45%, color-mix(in oklab, var(--accent) 35%, transparent), transparent 70%)',
+                    }}
+                  />
+                  <div className="hero-photo-mask">
+                    <Image
+                      src={withBasePath(siteConfig.photoPath)}
+                      alt={`${resume.name} — portrait photo`}
+                      width={400}
+                      height={400}
+                      priority
+                      className="aspect-square w-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </Reveal>
         </Section>

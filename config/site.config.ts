@@ -19,6 +19,8 @@ export interface SiteConfig {
   defaultTheme: ThemeName;
   resumePdfPath: string;
   ogImagePath: string;
+  /** Portrait used on the home hero — path relative to public/. */
+  photoPath: string;
   nav: NavItem[];
 }
 
@@ -33,6 +35,7 @@ export const siteConfig: SiteConfig = {
   defaultTheme: readTheme(process.env.NEXT_PUBLIC_DEFAULT_THEME, 'dark'),
   resumePdfPath: process.env.NEXT_PUBLIC_RESUME_PDF ?? '/documents/resume.pdf',
   ogImagePath: process.env.NEXT_PUBLIC_OG_IMAGE ?? '/og-image.png',
+  photoPath: process.env.NEXT_PUBLIC_PHOTO_PATH ?? '/images/photo-square.jpg',
   nav: [
     { href: '/', label: 'Home', enabled: true },
     { href: '/about', label: 'About', enabled: true },

@@ -1,15 +1,11 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Markdown from 'react-markdown';
 
-import { getAboutStory, getResume, publicAssetExists } from '@/lib/content';
+import { getAboutStory, getResume } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
-import { withBasePath } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
-
-const PHOTO_PATH = 'images/photo-square.jpg';
 
 export function generateMetadata(): Metadata {
   const resume = getResume();
@@ -42,34 +38,15 @@ const PHILOSOPHY = [
 export default function AboutPage() {
   const resume = getResume();
   const story = getAboutStory();
-  const hasPhoto = publicAssetExists(PHOTO_PATH);
   const education = resume.education.filter((entry) => entry.period.trim() !== '');
 
   return (
     <main>
-      {/* Header + Photo */}
       <Section eyebrow="About">
         <Reveal>
-          <h1 className="font-heading text-foreground mb-10 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
             About {resume.name}
           </h1>
-          <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10">
-            {hasPhoto && (
-              <div className="md:order-2 md:shrink-0">
-                <Image
-                  src={withBasePath(`/${PHOTO_PATH}`)}
-                  alt={`${resume.name} — portrait photo`}
-                  width={400}
-                  height={400}
-                  priority
-                  className="aspect-square w-full max-w-[280px] rounded-2xl object-cover sm:max-w-[320px] md:max-w-[400px]"
-                />
-              </div>
-            )}
-            <p className="text-muted-foreground text-lg leading-relaxed md:order-1">
-              {resume.summary}
-            </p>
-          </div>
         </Reveal>
       </Section>
 
