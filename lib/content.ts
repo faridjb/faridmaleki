@@ -18,6 +18,7 @@ import type {
  */
 
 const DOC_DIR = path.join(process.cwd(), 'doc');
+const PUBLIC_DIR = path.join(process.cwd(), 'public');
 
 function readJson<T>(filename: string): T {
   const filePath = path.join(DOC_DIR, filename);
@@ -205,6 +206,12 @@ export function getTopImpactMetrics(count = 4): ImpactMetric[] {
 /** The single strongest `results` entry for one project, ranked the same way as getTopImpactMetrics. */
 export function getStrongestResult(project: Project): string | undefined {
   return [...project.results].sort(compareByImpact)[0];
+}
+
+/** True when a file exists under public/ — lets a component skip a missing asset (e.g. a photo) instead of rendering a broken box. */
+export function publicAssetExists(relativePath: string): boolean {
+  const filePath = path.join(PUBLIC_DIR, relativePath.replace(/^\/+/, ''));
+  return fs.existsSync(filePath);
 }
 
 /** Drops the internal `confidentiality` note so it can never reach a component. */
