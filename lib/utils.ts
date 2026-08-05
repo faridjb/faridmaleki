@@ -24,3 +24,19 @@ export function joinWithAnd(items: string[]): string {
   if (items.length === 2) return `${items[0]} and ${items[1]}`;
   return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
 }
+
+/**
+ * Strips the protocol and leading "www." from a URL for display as link text, e.g.
+ * "https://www.linkedin.com/in/farid-j-maleki" -> "linkedin.com/in/farid-j-maleki".
+ * The link's `href` still carries the full URL — this only shortens what's shown.
+ */
+export function formatDisplayUrl(url: string): string {
+  try {
+    const { hostname, pathname, search } = new URL(url);
+    const host = hostname.replace(/^www\./, '');
+    const path = pathname === '/' ? '' : pathname;
+    return `${host}${path}${search}`.replace(/\/$/, '');
+  } catch {
+    return url;
+  }
+}

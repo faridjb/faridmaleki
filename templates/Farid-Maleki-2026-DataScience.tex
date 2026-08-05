@@ -1,0 +1,350 @@
+\documentclass[10pt, letterpaper]{article}
+
+% ---------- PACKAGES ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[margin=0.6in, top=0.45in, bottom=0.45in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usepackage{graphicx}
+
+% ---------- COLORS ----------
+% Neutral professional blue - swap "accent" per-company brand color when tailoring
+\definecolor{accent}{RGB}{20, 70, 130}
+\definecolor{accentlight}{RGB}{225, 234, 244}
+\definecolor{lightgray}{RGB}{110, 110, 110}
+\definecolor{rulegray}{RGB}{200, 210, 220}
+\definecolor{darktext}{RGB}{40, 40, 40}
+
+% ---------- HYPERLINKS ----------
+\hypersetup{
+  colorlinks=true,
+  urlcolor=accent,
+  linkcolor=accent,
+  pdftitle={Farid Maleki - CV},
+  pdfauthor={Farid Maleki},
+  bookmarks=false
+}
+
+% ======================================================
+% FLAT SINGLE-COLOR ICONS (no external icon font needed)
+% Baseline raised ~1mm so icons align with text, not below it
+% ======================================================
+
+% person / summary icon
+\newcommand{\iconperson}{%
+  \begin{tikzpicture}[baseline=-1.4mm]
+    \fill[accent] (0,0.20) circle (0.12);
+    \fill[accent] (-0.17,-0.20) .. controls (-0.17,0.03) and (0.17,0.03) .. (0.17,-0.20) -- cycle;
+  \end{tikzpicture}%
+}
+% briefcase / experience icon - bold stroke
+\newcommand{\iconbriefcase}{%
+  \begin{tikzpicture}[baseline=-1.4mm]
+    \draw[accent, line width=1.4pt, rounded corners=0.4pt] (-0.22,-0.14) rectangle (0.22,0.14);
+    \draw[accent, line width=1.4pt] (-0.08,-0.14) -- (-0.08,-0.19) -- (0.08,-0.19) -- (0.08,-0.14);
+    \draw[accent, line width=1.1pt] (-0.22,0) -- (0.22,0);
+  \end{tikzpicture}%
+}
+% bar-chart / skills icon
+\newcommand{\iconskills}{%
+  \begin{tikzpicture}[baseline=-1.4mm]
+    \fill[accent] (-0.18,-0.18) rectangle (-0.06,0.05);
+    \fill[accent] (-0.03,-0.18) rectangle (0.09,0.14);
+    \fill[accent] (0.12,-0.18) rectangle (0.24,-0.02);
+  \end{tikzpicture}%
+}
+% folder / projects icon - bold stroke
+\newcommand{\iconfolder}{%
+  \begin{tikzpicture}[baseline=-1.4mm]
+    \draw[accent, line width=1.4pt, rounded corners=0.4pt] (-0.22,-0.16) rectangle (0.22,0.10);
+    \draw[accent, line width=1.4pt] (-0.22,0.10) -- (-0.14,0.10) -- (-0.10,0.17) -- (0.05,0.17) -- (0.05,0.10);
+  \end{tikzpicture}%
+}
+% graduation cap / education icon - bold stroke
+\newcommand{\iconcap}{%
+  \begin{tikzpicture}[baseline=-1.4mm]
+    \draw[accent, line width=1.4pt, line join=round] (-0.24,0.04) -- (0,0.16) -- (0.24,0.04) -- (0,-0.08) -- cycle;
+    \draw[accent, line width=1.1pt] (-0.12,-0.02) -- (-0.12,-0.14) -- (0,-0.20) -- (0.12,-0.14) -- (0.12,-0.02);
+  \end{tikzpicture}%
+}
+% envelope / email icon
+\newcommand{\iconmail}{%
+  \begin{tikzpicture}[baseline=-1.45mm]
+    \draw[accent, line width=1.0pt] (-0.20,-0.13) rectangle (0.20,0.13);
+    \draw[accent, line width=1.0pt] (-0.20,0.13) -- (0,-0.02) -- (0.20,0.13);
+  \end{tikzpicture}%
+}
+% link / linkedin icon
+\newcommand{\iconlink}{%
+  \begin{tikzpicture}[baseline=-1.45mm]
+    \draw[accent, line width=1.2pt, rounded corners=0.9pt] (-0.20,0.07) rectangle (0.02,-0.07);
+    \draw[accent, line width=1.2pt, rounded corners=0.9pt] (-0.02,0.13) rectangle (0.20,-0.01);
+  \end{tikzpicture}%
+}
+% code-bracket / GitHub icon
+\newcommand{\icongithub}{%
+  \begin{tikzpicture}[baseline=-1.4mm]
+    \draw[accent, line width=1.2pt, line join=round] (-0.08,0.14) -- (-0.22,0) -- (-0.08,-0.14);
+    \draw[accent, line width=1.2pt, line join=round] (0.08,0.14) -- (0.22,0) -- (0.08,-0.14);
+  \end{tikzpicture}%
+}
+\newcommand{\iconpin}{%
+  \begin{tikzpicture}[baseline=-1.5mm]
+    \fill[accent] (0,0.02) circle (0.14);
+    \fill[white] (0,0.02) circle (0.055);
+    \fill[accent] (-0.10,-0.05) -- (0.10,-0.05) -- (0,-0.24) -- cycle;
+  \end{tikzpicture}%
+}
+% bike / hobby icon (inline in bio text)
+\newcommand{\iconbike}{%
+  \begin{tikzpicture}[baseline=-1.5mm]
+    \draw[accent, line width=1.0pt] (-0.18,-0.12) circle (0.09);
+    \draw[accent, line width=1.0pt] (0.18,-0.12) circle (0.09);
+    \draw[accent, line width=1.0pt] (-0.18,-0.12) -- (-0.02,0.10) -- (0.18,-0.12);
+    \draw[accent, line width=1.0pt] (-0.02,0.10) -- (-0.08,-0.12);
+    \draw[accent, line width=1.0pt] (-0.08,-0.12) -- (0.05,-0.12);
+  \end{tikzpicture}%
+}
+
+% ======================================================
+% SECTION HEADING: bold icon + title, followed by a rule
+% that continues on the SAME line to the right margin
+% ======================================================
+\newcommand{\cvsection}[2]{%
+  \par\vspace{9pt}\noindent
+  {#1}\,{\large\bfseries\color{accent}#2}\quad
+  \textcolor{rulegray}{\leavevmode\leaders\hrule height 0.7pt\hfill\kern0pt}\\[4pt]%
+}
+
+% ---------- LIST STYLE ----------
+% Level 1 = achievement title, Level 2 = Situation / Action / Result
+\setlist[itemize,1]{
+  leftmargin=1.15em,
+  itemsep=3pt,
+  parsep=0pt,
+  topsep=2pt,
+  label=\textcolor{accent}{\textbullet}
+}
+\setlist[itemize,2]{
+  leftmargin=1.3em,
+  itemsep=1pt,
+  parsep=0pt,
+  topsep=1.5pt,
+  label=\textcolor{lightgray}{\textendash}
+}
+
+% ---------- CUSTOM COMMANDS ----------
+% thin separator line between company experience records
+\newcommand{\jobsep}{%
+  \vspace{3pt}
+  \noindent\textcolor{rulegray}{\rule{\linewidth}{0.3pt}}
+  \vspace{4pt}
+}
+\newcommand{\job}[3]{%
+  \noindent
+  \textbf{#1} \hfill \textcolor{lightgray}{\small #3}\\
+  \textit{\textcolor{lightgray}{#2}}
+  \vspace{2pt}
+}
+\newcommand{\project}[1]{%
+  \noindent\textbf{#1}
+  \vspace{1pt}
+}
+\newcommand{\skillrow}[2]{%
+  \noindent\textbf{\small #1:} \textcolor{lightgray}{\small #2}\\[2pt]
+}
+% one achievement block: title + nested Challenge/Contribution/Impact
+\newcommand{\achievement}[4]{%
+  \item \textbf{#1}
+  \begin{itemize}
+    \item \textbf{Challenge:} #2
+    \item \textbf{Contribution:} #3
+    \item \textbf{Impact:} #4
+  \end{itemize}
+}
+
+\pagestyle{empty}
+\setlength{\parskip}{0pt}
+
+% ======================================================
+\begin{document}
+% ======================================================
+
+% ---------- HEADER: photo + name/contact ----------
+\noindent
+\begin{minipage}[c]{0.16\textwidth}
+  \centering
+  \tikz\clip (0,0) circle (1.05cm) node {\includegraphics[width=2.25cm,height=2.25cm,clip,keepaspectratio]{photo_square.png}};
+\end{minipage}%
+\begin{minipage}[c]{0.84\textwidth}
+  \raggedright
+  {\LARGE\bfseries\color{darktext} Farid Maleki}\\[3pt]
+  {\large\textcolor{accent} Senior Data Scientist --- Agentic AI, RAG \& LLMOps}\\[6pt]
+  \small
+  \iconmail\,\href{mailto:Farid.j.maleki@gmail.com}{Farid.j.maleki@gmail.com} \quad
+  \iconlink\,\href{https://www.linkedin.com/in/farid-j-maleki/}{linkedin.com/in/farid-j-maleki} \quad
+  \icongithub\,\href{https://github.com/faridjb}{github.com/faridjb}\\[3pt] \textbar{} Visa sponsorship required
+  Open to relocate (NL / EU)
+\end{minipage}
+
+\vspace{6pt}
+
+% ---------- PROFESSIONAL SUMMARY ----------
+\cvsection{\iconperson}{Professional Summary}
+
+Senior Data Scientist,with 6+ years taking GenAI and ML solutions from early experimentation to production-grade systems embedded in real business processes. Specialised in \textbf{agentic AI, RAG pipelines, LLMOps, and applied machine learning}, with a track record of measurable results (30--70\% improvements in cost, efficiency, and accuracy) across telecom, healthcare, fintech-adjacent, and recruitment domains. Direct, evidence-led communicator who enjoys cross-functional ownership from requirements to production monitoring. Recent roles were short-term contract and remote engagements by design; I am now looking to settle into a \textbf{permanent, on-site or hybrid} position where I can grow with one team long-term.
+
+\textbf{Outside of work}: keen cyclist, hiker, and camper who enjoys outdoor and adventure activities.
+
+% ---------- EXPERIENCE (nested: achievement title -> STAR) ----------
+\cvsection{\iconbriefcase}{Professional Experience}
+
+\job{Senior Data Scientist}{MCI R\&I Center \textup{(Full-time, On-site)}}{Nov 2025 -- Present}
+\textit{Brought GenAI from pilot to production in a large-scale enterprise telecom environment:}
+\begin{itemize}
+  \achievement{Voice-to-Voice AI Call Centre Agent}
+    {Call centre operations relied on manual human agents for high call volumes.}
+    {Designed and shipped a voice-to-voice \textbf{AI Call Centre Agent} end-to-end with LangGraph, combining real-time speech (ASR/TTS), RAG-based knowledge retrieval, intent detection, and CRM/ticketing API integration.}
+    {Replaced human call-centre operations in production, supporting \textbf{100+ concurrent conversations}.}
+  \achievement{Model-Pool Backend \& Latency Optimisation}
+    {Model serving latency limited scale.}
+    {Built a model-pool backend (ASR, LLM, TTS) with Nginx load balancing and routing.}
+    {Cut latency by \textbf{70\%} while sustaining production load.}
+  \achievement{LLMOps Observability}
+    {No visibility into agent/model behaviour in production.}
+    {Implemented \textbf{LLMOps observability} with Prometheus and Grafana.}
+    {Real-time monitoring of agent quality, prompt performance, and system health.}
+  \achievement{Network Anomaly Detection \& Root-Cause Analysis}
+    {Network faults took days to diagnose.}
+    {Developed a time-series agentic AI system for anomaly detection and root-cause analysis, integrating agents with internal analytics APIs.}
+    {Reduced MTTR to \textbf{under 1 hour} and cut manual anomaly identification time by \textbf{4x}.}
+\end{itemize}
+
+\jobsep
+
+\job{Data Scientist}{Robin --- Utrecht, Netherlands \textup{(Contract, Remote)}}{May 2025 -- Nov 2025}
+\textit{Delivered GenAI solutions from business requirement to production for a Dutch fintech-adjacent recruitment platform:}
+\begin{itemize}
+  \achievement{Conversational AI Chatbot}
+    {Recruiters needed a conversational way to find matching candidates.}
+    {Built a conversational AI chatbot backend (Django REST + OpenAI API) integrated with Vespa.ai and Elasticsearch.}
+    {Increased recruiter data completeness by \textbf{70\%}.}
+  \achievement{Privacy-by-Design Data Architecture}
+    {Candidate PII needed to stay protected across the pipeline.}
+    {Designed a privacy-by-design data architecture, anonymising CVs and separating identity resolution from the matching layer.}
+    {Zero data leakage across the conversational and matching pipeline.}
+  \achievement{Hybrid Search for CV-to-Job Matching}
+    {CV-to-job ranking relevance was underperforming.}
+    {Built hybrid search on Elasticsearch and Vespa.ai.}
+    {Improved ranking relevance by \textbf{33\%}.}
+  \achievement{Personalised Recommendation Engine}
+    {Candidate recommendations lacked personalisation.}
+    {Architected a recommendation engine on Vespa.ai with embedding pipelines.}
+    {\textbf{50\% relevance improvement}, ~70\% preference prediction accuracy.}
+\end{itemize}
+
+\jobsep
+
+\job{Data Scientist}{Procycons --- Frankfurt, Germany \textup{(Project, Remote)}}{Feb 2025 -- May 2025}
+\textit{Built responsible AI pipelines for automated ESG compliance in a regulated financial reporting context:}
+\begin{itemize}
+  \achievement{ESG Structured Information Extraction}
+    {ESG reports required manual, slow extraction of structured data.}
+    {Built a custom parsing and structured information extraction pipeline using NLP and table-detection models.}
+    {Achieved \textbf{90\%+ accuracy} on complex ESG reports.}
+  \achievement{Regulatory-Grade Workflow Orchestration}
+    {Regulatory use demanded auditable, reliable processing.}
+    {Orchestrated document workflows with Temporal.io and applied prompt optimisation with output validation.}
+    {Delivered compliance-grade reliability for regulatory review.}
+\end{itemize}
+
+\jobsep
+
+\job{Data Scientist --- Healthcare AI}{Eastern Pharmaceutical Group Pty Ltd --- Sydney, Australia \textup{(Full-time, Remote)}}{Sep 2023 -- Oct 2024}
+\textit{Led a 3-person team building EviPackAI, a production RAG platform for clinical evidence document generation:}
+\begin{itemize}
+  \achievement{End-to-End RAG Pipeline (EviPackAI)}
+    {Evidence packages for complementary medicine took weeks to compile manually.}
+    {Designed an end-to-end RAG pipeline: curated golden-source medical literature, built and managed a vector database, and set up retrieval evaluation frameworks.}
+    {Cut turnaround from 1.5 months to \textbf{30 minutes} and reduced cost by \textbf{AUD 5,000 per document}.}
+  \achievement{Clinical-Grade Output Guardrails}
+    {Clinical-grade output quality was non-negotiable.}
+    {Implemented guardrails and output validation against clinical evidence standards.}
+    {Sustained \textbf{95\%+ retrieval accuracy} in production.}
+\end{itemize}
+
+\jobsep
+
+\job{Data Scientist}{MCI R\&I Center \textup{(Full-time, On-site)}}{Oct 2024 -- May 2025}
+\begin{itemize}
+  \achievement{Autonomous Network Big-Data Infrastructure}
+    {Network operations data was fragmented across systems.}
+    {Architected big-data infrastructure for autonomous network operations hosting and deployed ML anomaly-detection models.}
+    {Reduced manual anomaly identification time by \textbf{4x} at cell level.}
+\end{itemize}
+
+\jobsep
+
+\job{Data Scientist}{Rightel \textup{(Part-time, Remote)}}{Nov 2021 -- Sep 2023}
+\begin{itemize}
+  \achievement{ML-Driven Anomaly Detection (UMTS/LTE)}
+    {UMTS/LTE network issues were identified reactively.}
+    {Designed and deployed ML-driven anomaly detection with automated KPI extraction pipelines.}
+    {Cut network downtime to \textbf{23\% of previous levels} and MTTR from days to \textbf{under 8 hours}, freeing \textbf{10 staff} from repetitive tasks.}
+\end{itemize}
+
+% ---------- SKILLS (after experience, Dutch-style) ----------
+\cvsection{\iconskills}{Technical Skills}
+
+\skillrow{GenAI \& LLMOps}{LLMs \textperiodcentered{} RAG \textperiodcentered{} Agentic AI \textperiodcentered{} LangChain \textperiodcentered{} LangGraph \textperiodcentered{} Prompt Engineering \& Optimisation \textperiodcentered{} Agent Evaluation \textperiodcentered{} Guardrails \textperiodcentered{} MLflow}
+\skillrow{Machine Learning}{Anomaly Detection \textperiodcentered{} Time-Series Forecasting \textperiodcentered{} Recommendation Systems \textperiodcentered{} NER \textperiodcentered{} Structured Information Extraction}
+\skillrow{Frameworks \& Libraries}{PyTorch \textperiodcentered{} TensorFlow \textperiodcentered{} Keras \textperiodcentered{} HuggingFace \textperiodcentered{} FastAPI \textperiodcentered{} Django REST}
+\skillrow{GenAI Platforms}{OpenAI API \textperiodcentered{} Claude (Anthropic) \textperiodcentered{} Google Gemini \textperiodcentered{} Mistral \textperiodcentered{} HuggingFace Hub}
+\skillrow{Data \& Analytics}{Python \textperiodcentered{} SQL \textperiodcentered{} Pandas \textperiodcentered{} Power BI \textperiodcentered{} Matplotlib}
+\skillrow{Information Retrieval}{Elasticsearch \textperiodcentered{} Vespa.ai \textperiodcentered{} Qdrant \textperiodcentered{} Vector Search \textperiodcentered{} Hybrid Search \textperiodcentered{} Embedding Pipelines}
+\skillrow{Infrastructure \& MLOps}{Docker \textperiodcentered{} Kubernetes \textperiodcentered{} Prometheus \textperiodcentered{} Grafana \textperiodcentered{} Loki \textperiodcentered{} CI/CD \textperiodcentered{} GCP \textperiodcentered{} AWS}
+\skillrow{Databases}{PostgreSQL \textperiodcentered{} TimescaleDB \textperiodcentered{} Elasticsearch \textperiodcentered{} Qdrant}
+\skillrow{Collaboration}{Agile/Scrum \textperiodcentered{} Jira \textperiodcentered{} Git \textperiodcentered{} Stakeholder Communication}
+\skillrow{Languages}{English (Fluent) \textperiodcentered{} Persian (Native) \textperiodcentered{} Dutch (Learning)}
+
+% ---------- PERSONAL PROJECTS ----------
+\cvsection{\iconfolder}{Personal Projects}
+
+\project{Self-Hosted Agentic AI Platform with Full LLMOps Stack}
+\begin{itemize}
+  \achievement{Self-Hosted Agentic AI Platform}
+    {Wanted a reference architecture for production conversational AI outside a corporate stack.}
+    {Designed on-premise infrastructure with self-hosted LLMs, ASR, TTS, and a multi-agent orchestration framework (resource manager, router, tool registry), with Qdrant, Flowise, AnythingLLM, and Prometheus/Grafana.}
+    {A fully working, reproducible self-hosted GenAI reference stack.}
+\end{itemize}
+
+\vspace{3pt}
+
+\project{Conversational KPI \& Data Intelligence Agent}
+\begin{itemize}
+  \achievement{Conversational KPI Agent}
+    {Stakeholders needed KPI answers without writing SQL.}
+    {Built an agent translating natural language into SQL-based KPI lookups and structured reports, with Power BI visualisation.}
+    {Self-service KPI access for non-technical stakeholders.}
+\end{itemize}
+
+% ---------- EDUCATION ----------
+\cvsection{\iconcap}{Education}
+
+\noindent\textbf{M.Sc. Telecommunications Engineering} \hfill \textcolor{lightgray}{2013}\\
+\textit{\textcolor{lightgray}{Malek Ashtar University of Technology}}
+
+\vspace{3pt}
+
+\noindent\textbf{B.Sc. Telecommunications Engineering} \hfill \textcolor{lightgray}{2010}\\
+\textit{\textcolor{lightgray}{Urmia University}}
+
+\end{document}
