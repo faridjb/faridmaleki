@@ -1,10 +1,10 @@
 /**
- * Matches a percentage figure (with optional leading "~" and trailing "+", e.g. "~80%+")
- * or a time/quantity transformation joining two values with an arrow or the word "to"
- * (e.g. "6 weeks → 30 minutes", "6 weeks to 30 minutes").
+ * Matches a percentage figure (with optional leading "~"/"+" and trailing "+", e.g.
+ * "~80%+", "+33%") or a time/quantity transformation joining two values with an arrow
+ * or the word "to" (e.g. "6 weeks → 30 minutes", "6 weeks to 30 minutes").
  */
 const EMPHASIS_PATTERN =
-  /(~?\d+(?:\.\d+)?%\+?|\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?|seconds?|secs?)\s*(?:→|->|to)\s*\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?|seconds?|secs?))/gi;
+  /([~+]?\d+(?:\.\d+)?%\+?|\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?|seconds?|secs?)\s*(?:→|->|to)\s*\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?|seconds?|secs?))/gi;
 
 interface EmphasizedTextProps {
   text: string;

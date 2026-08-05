@@ -101,7 +101,7 @@ export interface Metric {
 
 /** Matches the measurable fragment inside a free-text result string. */
 const METRIC_FRAGMENT =
-  /(\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?)\s*(?:→|->)\s*\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?)|under\s+\d+\s*(?:hours?|hrs?|minutes?|mins?)|\d+%\+?)/i;
+  /(\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?)\s*(?:→|->)\s*\d+\s*(?:weeks?|days?|hours?|hrs?|minutes?|mins?)|under\s+\d+\s*(?:hours?|hrs?|minutes?|mins?)|[~+]?\d+%\+?)/i;
 
 const EDGE_STOPWORDS = [
   /\s+reduced to$/i,
@@ -203,9 +203,9 @@ export function getTopImpactMetrics(count = 4): ImpactMetric[] {
     .map(({ result, company, projectId }) => ({ ...splitMetric(result), company, projectId }));
 }
 
-/** The single strongest `results` entry for one project, ranked the same way as getTopImpactMetrics. */
-export function getStrongestResult(project: Project): string | undefined {
-  return [...project.results].sort(compareByImpact)[0];
+/** The single strongest entry in a `results` array, ranked the same way as getTopImpactMetrics. */
+export function getStrongestResult(results: string[]): string | undefined {
+  return [...results].sort(compareByImpact)[0];
 }
 
 const DOMAIN_KEYWORDS: { label: string; pattern: RegExp }[] = [

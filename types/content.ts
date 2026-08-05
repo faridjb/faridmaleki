@@ -32,6 +32,11 @@ export interface ExperienceEntry {
   images: string[];
 }
 
+export interface GalleryImage {
+  src: string;
+  caption?: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -44,7 +49,7 @@ export interface Project {
   architectureDiagram: string;
   technologies: string[];
   results: string[];
-  gallery: string[];
+  gallery: GalleryImage[];
   lessonsLearned: string;
 }
 
