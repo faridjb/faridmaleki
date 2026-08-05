@@ -208,6 +208,38 @@ export function getStrongestResult(project: Project): string | undefined {
   return [...project.results].sort(compareByImpact)[0];
 }
 
+const DOMAIN_KEYWORDS: { label: string; pattern: RegExp }[] = [
+  { label: 'telecom', pattern: /telecom|network|\bRAN\b|core network|\bBTS\b|\bAPN\b/i },
+  { label: 'recruitment', pattern: /recruit|job matching|candidate/i },
+  { label: 'ESG/compliance', pattern: /\bESG\b|compliance|financial reporting/i },
+  { label: 'pharma', pattern: /pharma|clinical|evidence-package/i },
+  { label: 'research', pattern: /research/i },
+];
+
+/**
+ * Classifies each experience entry into a short domain label (telecom, recruitment, ...)
+ * by scanning its company/role/summary text, then dedupes while preserving the entries'
+ * order — used for framing page intros around actual domains rather than invented copy.
+ */
+export function getExperienceDomains(experience: ExperienceEntry[]): string[] {
+  const domains: string[] = [];
+  for (const entry of experience) {
+    const haystack = `${entry.company} ${entry.role} ${entry.summary}`;
+    for (const { label, pattern } of DOMAIN_KEYWORDS) {
+      if (pattern.test(haystack) && !domains.includes(label)) {
+        domains.push(label);
+      }
+    }
+  }
+  return domains;
+}
+
+/** Extracts the "N+ years" figure already stated in the resume summary (falls back to "6+"). */
+export function getYearsOfExperience(resume: Resume): string {
+  const match = resume.summary.match(/(\d+\+?)\s+years?/i);
+  return match ? match[1] : '6+';
+}
+
 /** True when a file exists under public/ — lets a component skip a missing asset (e.g. a photo) instead of rendering a broken box. */
 export function publicAssetExists(relativePath: string): boolean {
   const filePath = path.join(PUBLIC_DIR, relativePath.replace(/^\/+/, ''));

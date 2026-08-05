@@ -17,3 +17,10 @@ export function withBasePath(assetPath: string): string {
   const normalized = assetPath.startsWith('/') ? assetPath : `/${assetPath}`;
   return `${siteConfig.basePath}${normalized}`;
 }
+
+/** Joins a list into readable prose with an Oxford comma, e.g. ["a", "b", "c"] -> "a, b, and c". */
+export function joinWithAnd(items: string[]): string {
+  if (items.length <= 1) return items.join('');
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+}
