@@ -12,22 +12,24 @@ after launch.
 ## 0. Status — what's decided, what's built, what's still open
 
 **Decided:**
+
 - Stack: Next.js 15 (App Router) + TypeScript + TailwindCSS + shadcn/ui, static export for
-  GitHub Pages
+GitHub Pages
 - Deploy (v1): GitHub Pages **project site** at `https://faridjb.github.io/faridmaleki/`
-  (repo `faridjb/faridmaleki`; requires `basePath` / `assetPrefix` — see §7)
+(repo `faridjb/faridmaleki`; requires `basePath` / `assetPrefix` — see §7)
 - Contact: direct email/LinkedIn/GitHub links only, no form/backend for v1
 - Branding: dark-slate palette, dark-mode default, Space Grotesk / Inter / JetBrains Mono,
-  CSS-variable tokens (themeable); logo = FM monogram (node-graph mark deferred)
+CSS-variable tokens (themeable); logo = FM monogram (node-graph mark deferred)
 - Confidentiality: employer projects (MCI, Rightel, Robin, Procycons, Eastern Pharma) →
-  outcomes/percentages only, no raw screenshots/infra specifics; one personal GitHub repo
-  gets full detail
+outcomes/percentages only, no raw screenshots/infra specifics; one personal GitHub repo
+gets full detail
 - Content layout: a **flat** `doc/` folder (no top-level `data/` / `content/` / `docs/` split)
 - Settings: config-driven — no hardcoded URLs, strings, or colors in components (see §2)
 - Nav: pages that aren't built yet are hidden via an `enabled` flag, not dead links (see §2)
 - No AI CV chatbot in this plan (revisit separately if ever wanted)
 
-**Already built (in `/doc`):**
+**Already built (in** `/doc`**):**
+
 ```
 doc/
   00-project-vision.md        Vision, audience, sitemap
@@ -54,29 +56,33 @@ doc/
 ```
 
 **Data gaps Sprint 1 fixes (mechanical, no content decisions needed):**
-- `doc/projects.json` → `architectureDiagram` values still point at
-  `docs/architecture/<name>.mermaid`; rewrite to `doc/<name>.mermaid`
-- `doc/resume.json` → `"github": ""` is empty; fill with `https://github.com/faridjb`
-  (confirmed in `doc/12-contact-deployment.md`)
-- `doc/testimonials.json` doesn't exist; create it as `[]` so the Leadership sprint has a
-  file to read
 
-**Stale references inside `doc/*.md`:** several specs still mention `data/*.json`,
+- `doc/projects.json` → `architectureDiagram` values still point at
+`docs/architecture/<name>.mermaid`; rewrite to `doc/<name>.mermaid`
+- `doc/resume.json` → `"github": ""` is empty; fill with `https://github.com/faridjb`
+(confirmed in `doc/12-contact-deployment.md`)
+- `doc/testimonials.json` doesn't exist; create it as `[]` so the Leadership sprint has a
+file to read
+
+**Stale references inside** `doc/*.md`**:** several specs still mention `data/*.json`,
 `docs/architecture/`, and `content/`. Those folders do not exist — the real paths are flat
 under `doc/`. Every prompt below states this explicitly so Cursor doesn't follow the stale text.
 
 **Still open (content, doesn't block any sprint):**
+
 - Shorter "elevator" version of the About story (2-3 paragraphs) for the hero/summary block
 - `problem` / `lessonsLearned` fields per case study in `doc/projects.json`
 - Featured open-source repo pick (from `github.com/faridjb`) for the full-detail case study
 - 2-4 real ADPlist testimonial quotes for `doc/testimonials.json`
 - Confirm Robin / Procycons / Eastern Pharmaceutical are okay with outcomes-only treatment
-  before publishing even the sanitized case studies
+before publishing even the sanitized case studies
 
 Build with placeholders and swap content in later — the point of the JSON-driven structure is
 that content updates never touch component code.
 
 ---
+
+
 
 ## 1. Repository structure (final)
 
@@ -126,6 +132,8 @@ faridmaleki/
 
 ---
 
+
+
 ## 2. Conventions — config-driven, no hardcoded values
 
 This is a hard rule for every sprint: **no hardcoded URLs, emails, page titles, nav labels,
@@ -133,6 +141,7 @@ colors, or feature flags inside components.** Everything resolves through config
 content loaders.
 
 ### 2.1 — `config/site.config.ts`
+
 The single settings module. Reads environment variables, falls back to sane defaults, and
 exports one typed object:
 
@@ -162,6 +171,7 @@ Navbar, Footer, and `sitemap.ts` all render from `siteConfig.nav.filter(i => i.e
 Shipping a v2 page = flipping one flag to `true`, never editing the Navbar.
 
 ### 2.2 — `.env.example` (committed) / `.env.local` (git-ignored)
+
 ```
 NEXT_PUBLIC_SITE_NAME=Farid Maleki
 NEXT_PUBLIC_SITE_URL=https://faridjb.github.io
@@ -169,27 +179,35 @@ NEXT_PUBLIC_BASE_PATH=/faridmaleki
 NEXT_PUBLIC_DEFAULT_THEME=dark
 NEXT_PUBLIC_RESUME_PDF=/documents/resume.pdf
 ```
+
 `next.config.js` reads `NEXT_PUBLIC_BASE_PATH` for `basePath`/`assetPrefix` so the subpath is
 defined in exactly one place (see §7.1).
 
 ### 2.3 — Typed content loaders (`lib/content.ts` + `types/content.ts`)
+
 Pages never import raw JSON paths. `lib/content.ts` exports `getResume()`, `getExperience()`,
 `getProjects()`, `getProject(id)`, `getSkills()`, `getCertificates()`, `getPublications()`,
 `getTestimonials()`, `getAboutStory()`, `getDiagram(name)`. Interfaces live in
 `types/content.ts` and mirror the actual JSON shapes in `doc/`.
 
 Two shared helpers every page uses:
+
 - `isTodo(value)` — true when a string is empty or contains `TODO`; callers skip rendering
-  that field entirely rather than printing placeholder text
+that field entirely rather than printing placeholder text
 - `stripInternal(project)` — drops `confidentiality` before data reaches any component, so
-  an internal note can't leak into rendered HTML by accident
+an internal note can't leak into rendered HTML by accident
+
+
 
 ### 2.4 — Colors and type
+
 Palette lives as CSS variables in `globals.css`, mapped into `tailwind.config.ts` as theme
 tokens (`bg-primary`, `bg-surface`, `accent`, `accent-alt`, `text-primary`, `text-muted`,
 `success`). Components use token class names only — never `#22D3EE` or `bg-[#0B1120]`.
 
 ---
+
+
 
 ## 3. Modern design spec
 
@@ -197,36 +215,43 @@ So "modern" isn't left to interpretation. This is the visual contract every page
 follows — a systems-architect portfolio, not a creative showcase.
 
 **Layout**
+
 - Sticky top nav, translucent with backdrop blur, gains a bottom border once scrolled past 20px
 - Content column max-width ~1024px (`max-w-5xl`), generous vertical rhythm (96-128px between
-  sections), consistent `Section` wrapper component with an eyebrow label + heading pattern
+sections), consistent `Section` wrapper component with an eyebrow label + heading pattern
 - Mobile: hamburger sheet nav, single-column stacking, no horizontal scroll at 320px
 
 **Surface treatment**
+
 - Hero backdrop: subtle dot-grid or faint radial gradient in accent hue at low opacity —
-  atmospheric, never competing with the text
+atmospheric, never competing with the text
 - Cards: `bg-surface`, 1px hairline border, rounded-xl, hover raises 2-4px and shifts the
-  border to `accent` with a soft glow; transitions ~200ms ease-out
+border to `accent` with a soft glow; transitions ~200ms ease-out
 
 **Data-forward details (this is the senior-DS differentiator)**
+
 - `MetricStat` component renders results like "70% latency reduction" or "6 weeks → 30 minutes"
-  as a large numeral in `success` with a muted caption underneath — measured outcomes are the
-  headline, not buried in bullet text
+as a large numeral in `success` with a muted caption underneath — measured outcomes are the
+headline, not buried in bullet text
 - Tech badges use JetBrains Mono at small size with `accent-alt` tinting
 - Architecture diagrams render on `bg-surface` panels with a mono caption and a "view case
-  study" link
+study" link
 
 **Motion**
+
 - Framer Motion fade-up on section enter (~24px travel, 400ms, staggered children ~60ms),
-  triggered once per element
+triggered once per element
 - Every animation wrapped so `prefers-reduced-motion: reduce` disables travel and keeps opacity
 
 **Accessibility floor (non-negotiable)**
+
 - WCAG AA contrast on both themes, visible focus rings using the accent token
 - Semantic landmarks (`header`/`main`/`nav`/`footer`), one `h1` per page, real alt text
 - Full keyboard operability for nav, theme toggle, and gallery
 
 ---
+
+
 
 ## 4. Roadmap: v1 (ship this first) vs v2 (after launch)
 
@@ -245,7 +270,32 @@ Reasoning: a live site with Home/About/Experience/Projects/Architecture/Contact 
 job — getting a CTO or recruiter to a credible page fast — sooner than a fully-featured
 15-sprint build would.
 
+### Sprint index — where each prompt lives
+
+Prompts are grouped by release, not by number, so §5 runs 1-7 then jumps to 12. Sprints 8-11
+and 14 are not missing — they're in §6.
+
+| Sprint | Topic                          | Release | Section |
+| ------ | ------------------------------ | ------- | ------- |
+| 1      | Repository setup               | v1      | §5      |
+| 2      | Design system                  | v1      | §5      |
+| 3      | Home page                      | v1      | §5      |
+| 4      | About page                     | v1      | §5      |
+| 5      | Experience page                | v1      | §5      |
+| 6      | Projects page and case studies | v1      | §5      |
+| 7      | Architecture page              | v1      | §5      |
+| 8      | Blog                           | v2      | §6      |
+| 9      | Resume page + auto-gen PDF     | v2      | §6      |
+| 10     | Leadership                     | v2      | §6      |
+| 11     | Open source                    | v2      | §6      |
+| 12     | Contact                        | v1      | §5      |
+| 13     | SEO                            | v1      | §5      |
+| 14     | Performance and polish         | v2      | §6      |
+| 15     | Deploy                         | v1      | §5      |
+
 ---
+
+
 
 ## 5. Cursor prompts — v1
 
@@ -311,6 +361,8 @@ Do not create any pages or UI yet — skeleton, config, types, loaders, and the 
 Verify `npm run build` succeeds.
 ```
 
+
+
 ### Sprint 2 — Design system
 
 ```
@@ -354,6 +406,8 @@ Build the design system. No page-specific code in this sprint.
    landmarks, keyboard-operable nav and toggle.
 ```
 
+
+
 ### Sprint 3 — Home page
 
 ```
@@ -389,6 +443,8 @@ Use next/link for all internal navigation so basePath is applied automatically. 
 tasteful, and honor prefers-reduced-motion.
 ```
 
+
+
 ### Sprint 4 — About page
 
 ```
@@ -420,6 +476,8 @@ Do NOT add a fun-facts section — it's intentionally omitted, so leave it out e
 than rendering an empty block.
 ```
 
+
+
 ### Sprint 5 — Experience page
 
 ```
@@ -441,6 +499,8 @@ to render a small thumbnail row if images appear later.
 Add a short page intro noting 6+ years across telecom, recruitment, ESG/compliance, pharma,
 and research — derive the framing from getResume().summary rather than writing new claims.
 ```
+
+
 
 ### Sprint 6 — Projects page and case studies
 
@@ -478,6 +538,8 @@ Build two routes:
 Add a "Back to all projects" link and prev/next case-study navigation at the bottom.
 ```
 
+
+
 ### Sprint 7 — Architecture page
 
 ```
@@ -506,6 +568,11 @@ Requirements:
   of crashing the page.
 ```
 
+
+
+> Sprints 8-11 come next numerically but are v2 — their prompts are in §6. v1 continues here
+> with Sprint 12.
+
 ### Sprint 12 — Contact
 
 ```
@@ -528,6 +595,8 @@ so the link never 404s — Sprint 9 replaces it with the generated file.
 External links get target="_blank" and rel="noopener noreferrer". Email and profile links must
 be keyboard-focusable with visible focus rings.
 ```
+
+
 
 ### Sprint 13 — SEO
 
@@ -565,6 +634,8 @@ Verify after building that the exported HTML contains absolute URLs with the /fa
 prefix and that no page is missing a title or description.
 ```
 
+
+
 ### Sprint 15 — Deploy
 
 ```
@@ -589,6 +660,8 @@ succeeds and the site loads.
 ```
 
 ---
+
+
 
 ## 6. Cursor prompts — v2
 
@@ -628,6 +701,8 @@ the doc/ reference material).
 7. Set the /blog nav entry to enabled: true in config/site.config.ts.
 ```
 
+
+
 ### Sprint 9 — Resume page and auto-generated PDF
 
 ```
@@ -663,6 +738,8 @@ downloadable PDF, with no manual CV maintenance.
 6. Set the /resume nav entry to enabled: true in config/site.config.ts.
 ```
 
+
+
 ### Sprint 10 — Leadership
 
 ```
@@ -689,6 +766,8 @@ Read doc/10-leadership.md. Build app/leadership/page.tsx.
 
 5. Set the /leadership nav entry to enabled: true in config/site.config.ts.
 ```
+
+
 
 ### Sprint 11 — Open source
 
@@ -720,6 +799,8 @@ in the component.
 5. Set the /open-source nav entry to enabled: true in config/site.config.ts.
 ```
 
+
+
 ### Sprint 14 — Performance and polish
 
 ```
@@ -749,12 +830,15 @@ Report the before/after Lighthouse numbers so the improvement is visible.
 
 ---
 
+
+
 ## 7. Deployment to GitHub Pages — step by step
 
 This repo is `faridjb/faridmaleki` — a **project site**, not a user site. It publishes at
 `https://faridjb.github.io/faridmaleki/` and **requires** `basePath` / `assetPrefix`.
 
 ### 7.1 — next.config.js
+
 The subpath is defined once, in the environment, and read here:
 
 ```js
@@ -774,8 +858,12 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
+
+
 ### 7.2 — GitHub Actions workflow
+
 Create `.github/workflows/deploy.yml`:
+
 ```yaml
 name: Deploy to GitHub Pages
 
@@ -828,52 +916,75 @@ jobs:
 Sprint 9 adds a resume-generation step to the `build` job, before `npm run build`.
 
 ### 7.3 — Repo settings (one-time, manual)
+
 1. Use the existing repo `github.com/faridjb/faridmaleki` (do **not** rename to
-   `*.github.io` for v1)
+  `*.github.io` for v1)
 2. Go to **Settings → Pages**
 3. Under **Build and deployment → Source**, select **GitHub Actions** (not "Deploy from a branch")
 4. Push to `main` — the workflow runs automatically and the site goes live at
-   `https://faridjb.github.io/faridmaleki/`
+  `https://faridjb.github.io/faridmaleki/`
+
+
 
 ### 7.4 — Later: custom domain
+
 When you buy a domain:
+
 1. Add a `public/CNAME` file containing just the domain (e.g. `faridmaleki.com`)
 2. Add the corresponding DNS records at your registrar (A records to GitHub's IPs for an apex
-   domain, or a CNAME record to `faridjb.github.io` for a subdomain)
+  domain, or a CNAME record to `faridjb.github.io` for a subdomain)
 3. Set `NEXT_PUBLIC_BASE_PATH=` (empty) and `NEXT_PUBLIC_SITE_URL=https://yourdomain.com` in
-   the workflow env block — because the base path is config-driven, this is the only change
+  the workflow env block — because the base path is config-driven, this is the only change
    needed; no component or config file edits
 4. Re-enable "Enforce HTTPS" in **Settings → Pages** once DNS propagates (usually automatic)
 
 ---
 
+
+
 ## 8. Post-deploy checklist
 
 **Routing and assets**
+
 - [ ] `https://faridjb.github.io/faridmaleki/` loads; CSS, fonts, and images all resolve
-      (no 404s from a missing `/faridmaleki` prefix)
+  ```
+  (no 404s from a missing `/faridmaleki` prefix)
+  ```
 - [ ] Every nav link works, and deep links like `/faridmaleki/projects/ai-call-center/` load
-      directly on refresh
+  ```
+  directly on refresh
+  ```
 - [ ] Nav shows only the six enabled v1 pages — no dead links to `/blog`, `/resume`,
-      `/leadership`, or `/open-source`
+  ```
+  `/leadership`, or `/open-source`
+  ```
 - [ ] `sitemap.xml` and `robots.txt` contain absolute URLs with the base path, and list no
-      disabled routes
+  ```
+  disabled routes
+  ```
 
 **Content integrity**
+
 - [ ] No `TODO` string is visible anywhere on the live site (check case studies especially)
 - [ ] No `confidentiality` text renders on any project page — view source to confirm
 - [ ] No employer-confidential screenshots or infra specifics beyond what's in the sanitized
-      `doc/projects.json`
+  ```
+  `doc/projects.json`
+  ```
 - [ ] `explicitGaps` from `doc/skills.json` appears nowhere in the rendered output
 - [ ] Resume download link resolves to a real PDF (placeholder is fine until Sprint 9)
 
 **Code conventions**
+
 - [ ] No hardcoded emails, profile URLs, or site URLs in components — all trace back to
-      `config/site.config.ts` or `doc/resume.json`
+  ```
+  `config/site.config.ts` or `doc/resume.json`
+  ```
 - [ ] No raw hex colors outside `globals.css` / `tailwind.config.ts`
 - [ ] `.env.local` is git-ignored and `.env.example` is committed
 
 **Quality**
+
 - [ ] Lighthouse check (target >90 for v1; >95 is the Sprint 14 goal)
 - [ ] Renders correctly at 320px, 768px, and 1440px
 - [ ] Light and dark themes both pass AA contrast, and the toggle persists without a flash
@@ -881,4 +992,5 @@ When you buy a domain:
 - [ ] Open Graph preview renders correctly (test the URL in the LinkedIn post inspector)
 
 **Then**
+
 - [ ] Share the link — this is the actual point
