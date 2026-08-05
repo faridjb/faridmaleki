@@ -43,6 +43,6 @@ export const siteConfig: SiteConfig = {
     { href: '/resume', label: 'Resume', enabled: false }, // Sprint 9
     { href: '/leadership', label: 'Leadership', enabled: false }, // Sprint 10
     { href: '/open-source', label: 'Open Source', enabled: false }, // Sprint 11
-    { href: '/blog', label: 'Blog', enabled: false }, // Sprint 8
+    { href: '/blog', label: 'Blog', enabled: true },
   ],
 };

@@ -1,0 +1,85 @@
+---
+title: 'Architecture Decisions Behind an On-Premise Voice AI Call Center Agent'
+description: 'How we structured orchestration, model pooling, and retrieval for an autonomous voice-to-voice call center agent — and the trade-offs behind each choice.'
+date: '2026-05-18'
+tags: ['Architecture', 'Conversational AI', 'LLMOps']
+draft: false
+---
+
+Most of the interesting decisions in this project weren't about picking a bigger model —
+they were about how the pieces around the model were wired together. This is a walk through
+the structural choices behind an autonomous voice-to-voice agent that now handles live calls
+end to end: intent detection, knowledge retrieval, and account actions, with no scripted
+call tree in sight.
+
+## Orchestration as a graph, not a call script
+
+A traditional IVR-style flow is a tree you author by hand: if the caller says X, go to node
+Y. That falls apart the moment a caller's request doesn't fit the tree. We modeled the
+conversation as an explicit orchestration graph instead — an intent-detection node routes
+each turn to whichever tool the situation actually calls for, and the graph can revisit
+earlier nodes mid-call rather than being locked into a single forward path.
+
+The orchestrator itself doesn't "know" how to look something up or how to open a ticket —
+it only knows how to decide _when_ to call the tool that does. That separation turned out to
+matter more than any single model choice: it means a tool's internals can change completely
+without touching the routing logic that decides when to invoke it.
+
+```python
+def route(state: AgentState) -> str:
+    if state.intent == "knowledge_lookup":
+        return "retrieve"
+    if state.intent == "account_action":
+        return "call_crm_tool"
+    return "respond"
+
+graph.add_conditional_edges("orchestrator", route)
+```
+
+## A model pool, not a single model instance
+
+Speech recognition, response generation, and speech synthesis each run as a **pool** of
+model workers behind a load balancer, rather than one instance handling every call
+sequentially. A single caller's turn moves through ASR → orchestration → TTS in series, but
+across callers, those stages run in parallel — so a slow `TTS` render for one call never
+blocks `ASR` for another.
+
+That pooling, plus trimming retrieval out of the critical path where it isn't needed (more
+on that below), is what got us to a **70% latency reduction — roughly 3x faster** than the
+first working version, while sustaining **100 concurrent call throughput**.
+
+> The biggest latency win didn't come from a bigger model. It came from treating retrieval
+> as optional on every turn instead of mandatory on every turn.
+
+## Retrieval as a tool call, not a preprocessing step
+
+It's tempting to prepend retrieved context to every prompt "just in case." We treated
+retrieval as a tool the orchestrator can choose to call instead — only invoked when the
+detected intent actually needs grounded knowledge. Turns that are pure conversation or a
+direct account action skip retrieval entirely, which is where most of the latency budget
+came back from.
+
+## Closing the loop with real systems
+
+An agent that can only talk is a demo. The orchestrator's other tool calls hit CRM and
+ticketing APIs directly, so a resolved request actually closes: an account update lands,
+a ticket gets filed, a status gets changed — without a human relaying it afterward. That's
+what let this move from "answers questions" to full automation of the interaction.
+
+## Observability from the first release
+
+None of the above is trustworthy without visibility into it. Every stage of the pipeline
+emits metrics — latency per stage, pool utilization, retrieval hit rate, escalation
+frequency — into Prometheus, with Grafana as the operational view. Instrumenting this from
+day one, rather than bolting it on after an incident, made every later optimization
+measurable instead of anecdotal.
+
+## What shipped
+
+- **70% latency reduction (3x faster)** end to end per call turn
+- **100 concurrent call throughput** sustained in production
+- **Full automation** via direct CRM/ticketing integration, no manual hand-off required
+
+None of these numbers came from a single breakthrough — they're the compounding effect of
+making the orchestration explicit, pooling the expensive stages, and making retrieval
+optional rather than automatic.

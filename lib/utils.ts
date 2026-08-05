@@ -18,6 +18,23 @@ export function withBasePath(assetPath: string): string {
   return `${siteConfig.basePath}${normalized}`;
 }
 
+/**
+ * Formats an ISO date string ("2026-02-10") as "Feb 10, 2026" for display on blog posts.
+ * Pinned to UTC — this is baked into static HTML at build time, so formatting in the
+ * build machine's local timezone could shift a date-only string by a day for readers
+ * elsewhere; UTC keeps the date the author wrote in the frontmatter stable everywhere.
+ */
+export function formatDate(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
 /** Joins a list into readable prose with an Oxford comma, e.g. ["a", "b", "c"] -> "a, b, and c". */
 export function joinWithAnd(items: string[]): string {
   if (items.length <= 1) return items.join('');

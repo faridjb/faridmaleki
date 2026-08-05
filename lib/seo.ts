@@ -57,7 +57,13 @@ export function buildMetadata({
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
-    alternates: { canonical: url },
+    // `alternates` (like openGraph/twitter below) is replaced wholesale between the layout
+    // and the page rather than merged, so the RSS discovery link has to be repeated here
+    // on every page rather than declared once in app/layout.tsx.
+    alternates: {
+      canonical: url,
+      types: { 'application/rss+xml': absoluteUrl('/feed.xml') },
+    },
     openGraph: {
       title,
       description,

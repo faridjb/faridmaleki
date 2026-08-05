@@ -9,7 +9,7 @@ import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
 
-const PHOTO_PATH = 'images/photo-square.png';
+const PHOTO_PATH = 'images/photo-square.jpg';
 
 export function generateMetadata(): Metadata {
   const resume = getResume();

@@ -28,6 +28,12 @@ export const metadata: Metadata = {
   // openGraph/twitter images, Next does not resolve them against metadataBase — so they
   // need withBasePath() explicitly or they'd 404 once basePath is non-empty.
   manifest: withBasePath('/site.webmanifest'),
+  // Every page also sets this via buildMetadata() in lib/seo.ts (Next replaces rather than
+  // merges `alternates` between layout and page) — kept here too so the root layout's own
+  // metadata is complete on its own.
+  alternates: {
+    types: { 'application/rss+xml': absoluteUrl('/feed.xml') },
+  },
   icons: {
     icon: [
       { url: withBasePath('/favicon.ico') },
