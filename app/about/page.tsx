@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Markdown from 'react-markdown';
 
-import { getAboutStory, getResume } from '@/lib/content';
+import { siteConfig } from '@/config/site.config';
+import { getAboutStory, getResume, publicAssetExists } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
+import { withBasePath } from '@/lib/utils';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
@@ -39,6 +42,8 @@ export default function AboutPage() {
   const resume = getResume();
   const story = getAboutStory();
   const education = resume.education.filter((entry) => entry.period.trim() !== '');
+  const photoRelative = siteConfig.photoPath.replace(/^\/+/, '');
+  const hasPhoto = publicAssetExists(photoRelative);
 
   return (
     <main>
@@ -47,6 +52,19 @@ export default function AboutPage() {
         <Section eyebrow="Story" heading="How I got here" as="h1">
           <Reveal>
             <div className="max-w-2xl">
+              {hasPhoto && (
+                <div className="border-accent/40 ring-accent/15 relative mb-4 size-32 overflow-hidden rounded-full border-2 ring-4 sm:float-left sm:mr-6 sm:mb-3 sm:size-36 lg:size-40">
+                  <Image
+                    src={withBasePath(siteConfig.photoPath)}
+                    alt={`${resume.name} — portrait photo`}
+                    width={320}
+                    height={320}
+                    priority
+                    sizes="(max-width: 640px) 128px, (max-width: 1024px) 144px, 160px"
+                    className="size-full object-cover object-[center_18%]"
+                  />
+                </div>
+              )}
               <Markdown
                 components={{
                   p: ({ ...props }) => (
@@ -59,6 +77,7 @@ export default function AboutPage() {
               >
                 {story}
               </Markdown>
+              {hasPhoto && <div className="clear-both" />}
             </div>
           </Reveal>
         </Section>
