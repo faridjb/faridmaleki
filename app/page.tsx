@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRightIcon, MailIcon, MapPinIcon } from 'lucide-react';
+import { ArrowRightIcon, CalendarIcon, MailIcon, MapPinIcon } from 'lucide-react';
 
 import { siteConfig } from '@/config/site.config';
 import {
@@ -256,6 +256,15 @@ export default function Home() {
               production AI roles.
             </p>
             <div className="flex flex-wrap gap-3">
+              <a
+                href={siteConfig.booking.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants())}
+              >
+                <CalendarIcon />
+                {siteConfig.booking.label}
+              </a>
               <a
                 href={`mailto:${resume.email}`}
                 className={cn(buttonVariants({ variant: 'outline' }))}

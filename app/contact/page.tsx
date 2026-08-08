@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { DownloadIcon, MailIcon, MapPinIcon } from 'lucide-react';
+import { CalendarIcon, DownloadIcon, MailIcon } from 'lucide-react';
 
 import { siteConfig } from '@/config/site.config';
 import { getResume } from '@/lib/content';
@@ -22,7 +22,7 @@ interface ContactChannel {
 }
 
 const DESCRIPTION =
-  'Open to conversations with recruiters, hiring managers, and tech leads about production AI roles — reach out directly, no forms in between.';
+  'Happy to talk with CTOs, tech leads, engineering managers, and hiring partners about data science and AI projects — production systems, architecture trade-offs, and roles where shipping matters. Book a video call or reach out directly.';
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
@@ -36,6 +36,13 @@ export default function ContactPage() {
   const resume = getResume();
 
   const channels: ContactChannel[] = [
+    {
+      label: 'Video call',
+      value: siteConfig.booking.label,
+      href: siteConfig.booking.href,
+      icon: CalendarIcon,
+      external: true,
+    },
     {
       label: 'Email',
       value: resume.email,
@@ -69,13 +76,9 @@ export default function ContactPage() {
           <p className="text-muted-foreground mt-4 max-w-xl text-lg leading-relaxed">
             {DESCRIPTION}
           </p>
-          <p className="text-muted-foreground mt-4 flex items-center gap-2 font-mono text-sm">
-            <MapPinIcon className="size-4 shrink-0" aria-hidden />
-            {resume.location}
-          </p>
         </Reveal>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-3">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {channels.map((channel, index) => {
             const Icon = channel.icon;
             return (
@@ -105,12 +108,21 @@ export default function ContactPage() {
         </div>
 
         <Reveal index={channels.length}>
-          <div className="mt-16">
+          <div className="mt-16 flex flex-wrap gap-3">
+            <a
+              href={siteConfig.booking.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ size: 'lg' }))}
+            >
+              <CalendarIcon />
+              {siteConfig.booking.label}
+            </a>
             <Link
               href={siteConfig.resumePdfPath}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ size: 'lg' }))}
+              className={cn(buttonVariants({ size: 'lg', variant: 'outline' }))}
             >
               Download Resume
               <DownloadIcon />

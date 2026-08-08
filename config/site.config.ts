@@ -23,6 +23,8 @@ export interface SiteConfig {
   photoPath: string;
   /** Secondary hero CTA — story link into /about. */
   homeStoryCta: { label: string; href: string };
+  /** Public Google Calendar appointment schedule for video meetings. */
+  booking: { label: string; href: string };
   /** Framer spring used by the site-wide scroll-tone atmosphere. */
   scrollAtmosphere: { springStiffness: number; springDamping: number };
   /** Framer spring used by site-wide scroll-morphing background patterns. */
@@ -64,6 +66,11 @@ export const siteConfig: SiteConfig = {
   homeStoryCta: {
     label: process.env.NEXT_PUBLIC_HOME_STORY_CTA_LABEL ?? 'Read my story',
     href: process.env.NEXT_PUBLIC_HOME_STORY_CTA_HREF ?? '/about',
+  },
+  booking: {
+    label: process.env.NEXT_PUBLIC_BOOKING_LABEL ?? 'Book a video call',
+    href:
+      process.env.NEXT_PUBLIC_BOOKING_URL ?? 'https://calendar.app.google/vKTyumFkHCbFBCk28',
   },
   scrollAtmosphere: {
     springStiffness: Number(process.env.NEXT_PUBLIC_SCROLL_ATMOSPHERE_STIFFNESS ?? 90),
