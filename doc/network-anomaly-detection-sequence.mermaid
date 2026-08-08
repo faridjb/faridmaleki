@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant OSS as Live OSS feeds
+    participant ETL as ETL pipeline
+    participant Det as Anomaly detector
+    participant RCA as Agentic RCA
+    participant Ops as NOC / operators
+    participant Mail as Email reports
+    participant Dash as Live dashboard
+
+    loop Continuous ingest
+        OSS->>ETL: Counters / KPIs / node health
+        ETL->>Det: Cleaned time-series features
+        Det->>Det: Seasonality & holiday-aware scoring
+        alt Anomaly scored
+            Det->>RCA: Candidate incident
+            RCA->>RCA: Correlate signals / propose cause
+            RCA->>Mail: Structured alert
+            RCA->>Dash: Incident card
+            Dash-->>Ops: Investigate & acknowledge
+            Ops-->>Det: Feedback loop
+        end
+    end

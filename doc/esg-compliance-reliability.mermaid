@@ -1,0 +1,30 @@
+flowchart LR
+    subgraph Ingest["Ingestion"]
+        DOC[(ESG documents)]
+        API[FastAPI service]
+    end
+
+    subgraph Durable["Durable orchestration"]
+        TEMP[Temporal.io]
+        RETRY[Retries · timeouts · heartbeats]
+    end
+
+    subgraph Quality["Compliance-grade quality"]
+        EXTRACT[NLP + table models]
+        PROMPT[Prompt optimization]
+        CHECK[Output validation]
+    end
+
+    subgraph Out["Audit outputs"]
+        RESULT[Structured extraction]
+        TRAIL[(Immutable processing trail)]
+    end
+
+    DOC --> API --> TEMP
+    TEMP --> RETRY --> EXTRACT
+    EXTRACT --> PROMPT --> CHECK
+    CHECK --> RESULT
+    CHECK --> TRAIL
+
+    style TEMP fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style CHECK fill:#111827,stroke:#6366F1,color:#E5E7EB

@@ -70,9 +70,12 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
   const previous = currentIndex > 0 ? siblings[currentIndex - 1] : undefined;
   const next = currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : undefined;
 
-  const diagram = !isTodo(project.architectureDiagram)
-    ? getDiagram(project.architectureDiagram)
-    : '';
+  const diagrams = (project.architectureDiagrams ?? [])
+    .map((entry) => ({
+      ...entry,
+      definition: !isTodo(entry.file) ? getDiagram(entry.file) : '',
+    }))
+    .filter((entry) => entry.definition.length > 0);
 
   return (
     <main>
@@ -85,21 +88,20 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
           <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
             {project.title}
           </h1>
+          {!isTodo(project.overview) && (
+            <p className="text-muted-foreground mt-6 max-w-2xl text-lg leading-relaxed">
+              {project.overview}
+            </p>
+          )}
         </Reveal>
       </Section>
 
-      {!isTodo(project.overview) && (
-        <Section eyebrow="Overview">
-          <Reveal>
-            <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed">
-              {project.overview}
-            </p>
-          </Reveal>
-        </Section>
-      )}
-
       {!isTodo(project.problem) && (
-        <Section eyebrow="Problem">
+        <Section
+          eyebrow="Problem"
+          heading="The production constraint"
+          description="What failed at scale — and why a demo-grade approach was not enough."
+        >
           <Reveal>
             <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
               {project.problem}
@@ -109,7 +111,11 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
       )}
 
       {!isTodo(project.solution) && (
-        <Section eyebrow="Solution">
+        <Section
+          eyebrow="Solution"
+          heading="How it was built"
+          description="Architecture choices that held under load, audit, or regulatory review."
+        >
           <Reveal>
             <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
               {project.solution}
@@ -118,18 +124,42 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
         </Section>
       )}
 
-      {diagram && (
-        <Section eyebrow="Architecture">
-          <Reveal>
-            <Card hoverable={false} className="p-4 sm:p-6">
-              <ArchitectureDiagram definition={diagram} />
-            </Card>
-          </Reveal>
+      {diagrams.length > 0 && (
+        <Section
+          eyebrow="Architecture"
+          heading="System architecture"
+          description="Production views of the same system — overview, runtime sequence, and how it is operated."
+        >
+          <div className="flex flex-col gap-12">
+            {diagrams.map((entry, index) => (
+              <Reveal key={entry.file} index={index}>
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <h3 className="font-heading text-foreground text-lg font-semibold tracking-tight">
+                      {entry.title}
+                    </h3>
+                    {entry.description ? (
+                      <p className="text-muted-foreground mt-1 max-w-2xl text-sm leading-relaxed">
+                        {entry.description}
+                      </p>
+                    ) : null}
+                  </div>
+                  <Card hoverable={false} className="p-4 sm:p-6">
+                    <ArchitectureDiagram definition={entry.definition} />
+                  </Card>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </Section>
       )}
 
       {project.technologies.length > 0 && (
-        <Section eyebrow="Technologies">
+        <Section
+          eyebrow="Stack"
+          heading="Technologies"
+          description="Production tooling used to ship and operate the system."
+        >
           <Reveal>
             <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
@@ -141,7 +171,11 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
       )}
 
       {project.results.length > 0 && (
-        <Section eyebrow="Results">
+        <Section
+          eyebrow="Outcomes"
+          heading="Measured results"
+          description="Figures operators and stakeholders could verify — not demo metrics."
+        >
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {project.results.map((result, index) => {
               const metric = splitMetric(result);
@@ -156,7 +190,7 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
       )}
 
       {project.gallery.length > 0 && (
-        <Section eyebrow="Gallery">
+        <Section eyebrow="Gallery" heading="Artifacts">
           <Reveal>
             <Gallery images={project.gallery} />
           </Reveal>
@@ -164,7 +198,11 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
       )}
 
       {!isTodo(project.lessonsLearned) && (
-        <Section eyebrow="Lessons Learned">
+        <Section
+          eyebrow="Lessons"
+          heading="What we would keep"
+          description="Decisions that mattered after the system was in production."
+        >
           <Reveal>
             <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
               {project.lessonsLearned}

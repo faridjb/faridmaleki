@@ -5,14 +5,44 @@
     "company": "MCI R&D Center",
     "confidentiality": "employer-owned telecom infrastructure — publish outcomes/percentages only, no raw dashboard screenshots, node counts, or internal system names until cleared",
     "heroImage": "RESERVED — gallery component must render gracefully with an empty array until you add images",
-    "overview": "Replaced human call-center operations with an autonomous voice-to-voice AI agent, orchestrating intent detection, knowledge retrieval, and live API/CRM actions.",
-    "problem": "TODO: what specifically broke down with the human-staffed process (cost, latency, coverage, consistency)?",
-    "solution": "End-to-end LangGraph orchestration with intent detection, RAG-based knowledge retrieval, and API integration as binding tools; model-pool architecture for ASR/LLM/TTS behind Nginx load balancing.",
-    "architectureDiagram": "doc/ai-call-center.mermaid",
-    "technologies": ["LangGraph", "ASR", "TTS", "Nginx", "Prometheus", "Grafana"],
-    "results": ["70% latency reduction (3x faster)", "100 concurrent call throughput", "Integrated with CRM/ticketing for full automation"],
+    "overview": "Replaced human call-center operations with an autonomous voice-to-voice AI agent, orchestrating intent detection, knowledge retrieval, and live API/CRM actions under on-premise deployment constraints.",
+    "problem": "Human-staffed call handling could not scale concurrent conversations without adding headcount, and response latency varied with load. The business needed an on-premise path that kept audio and customer data inside operator infrastructure while still connecting to CRM and ticketing for real resolutions — not a cloud demo that failed under peak traffic.",
+    "solution": "End-to-end LangGraph orchestration with intent detection, RAG-based knowledge retrieval, and API integration as binding tools. ASR, LLM, and TTS run as separately pooled services behind Nginx load balancing so each modality can scale and fail independently, with Prometheus/Grafana for production visibility.",
+    "architectureDiagrams": [
+      {
+        "title": "System overview",
+        "description": "End-to-end voice path: ingress, model pools, agent orchestration, tools, and monitoring.",
+        "file": "doc/ai-call-center.mermaid"
+      },
+      {
+        "title": "Runtime call sequence",
+        "description": "How a single conversation moves through ASR → orchestration → tools → LLM → TTS.",
+        "file": "doc/ai-call-center-sequence.mermaid"
+      },
+      {
+        "title": "Deployment & observability",
+        "description": "Pool-based scaling behind Nginx with metrics exported to Prometheus/Grafana.",
+        "file": "doc/ai-call-center-deployment.mermaid"
+      }
+    ],
+    "technologies": [
+      "LangGraph",
+      "ASR",
+      "TTS",
+      "Nginx",
+      "Prometheus",
+      "Grafana",
+      "Python",
+      "RAG",
+      "CRM / Ticketing APIs"
+    ],
+    "results": [
+      "70% latency reduction (3x faster)",
+      "100 concurrent call throughput",
+      "Integrated with CRM/ticketing for full automation"
+    ],
     "gallery": [],
-    "lessonsLearned": "TODO — you mentioned producing a Persian-language Lessons Learned Report for a related Big Data Infrastructure project; worth translating/adapting a version for this case study."
+    "lessonsLearned": "Separating ASR, LLM, and TTS into load-balanced pools mattered more than any single model upgrade: latency and concurrency improved only after the control plane stopped treating the stack as one monolithic GPU process. Tool-bound orchestration (RAG + CRM) kept the agent useful in production instead of conversational-only."
   },
   {
     "id": "network-anomaly-detection",
@@ -20,14 +50,38 @@
     "company": "MCI R&D Center",
     "confidentiality": "employer-owned telecom infrastructure — publish outcomes/percentages only, no raw dashboard screenshots or node-level specifics until cleared",
     "heroImage": "RESERVED — gallery component must render gracefully with an empty array until you add images",
-    "overview": "Time-series and agentic AI system detecting anomalies on APN nodes across the national telecom network.",
-    "problem": "TODO: scale/frequency of undetected anomalies before this system, prior MTTR baseline",
-    "solution": "ETL pipeline against live OSS data with seasonality- and holiday-aware analytics; automated anomaly reporting via email and live dashboards.",
-    "architectureDiagram": "doc/network-anomaly-detection.mermaid",
-    "technologies": ["Time-series analysis", "ETL", "Agentic AI"],
+    "overview": "Time-series and agentic AI system detecting anomalies on APN nodes across the national telecom network, with automated reporting for operators.",
+    "problem": "Core-network anomalies were easy to miss in high-volume telemetry, and when they were found, root-cause analysis still depended on expert time. That stretched mean time to repair and left NOC teams reacting from fragmented counters instead of a correlated incident view — especially around seasonality and holiday traffic patterns.",
+    "solution": "ETL against live OSS data feeds a seasonality- and holiday-aware detection layer; an agentic RCA step correlates signals and pushes structured alerts to email and live dashboards so operators get a usable incident narrative, not only a raw score.",
+    "architectureDiagrams": [
+      {
+        "title": "Detection pipeline",
+        "description": "OSS ingest → ETL → anomaly models → agentic RCA → operator channels.",
+        "file": "doc/network-anomaly-detection.mermaid"
+      },
+      {
+        "title": "Incident sequence",
+        "description": "Continuous ingest loop from telemetry through alert delivery and feedback.",
+        "file": "doc/network-anomaly-detection-sequence.mermaid"
+      },
+      {
+        "title": "Ops delivery map",
+        "description": "How detections reach email, dashboards, and workflow handoff.",
+        "file": "doc/network-anomaly-detection-ops.mermaid"
+      }
+    ],
+    "technologies": [
+      "Time-series analysis",
+      "ETL",
+      "Agentic AI",
+      "OSS / NMS integration",
+      "Python",
+      "Dashboards",
+      "Automated reporting"
+    ],
     "results": ["MTTR reduced to under 1 hour"],
     "gallery": [],
-    "lessonsLearned": "TODO"
+    "lessonsLearned": "Holiday- and seasonality-aware features were non-negotiable in telecom traffic — generic anomaly thresholds produced noise operators ignored. Closing the loop with dashboard feedback kept the detector aligned with how NOC teams actually triage."
   },
   {
     "id": "recruitment-matching-recommendation",
@@ -35,14 +89,43 @@
     "company": "Robin",
     "confidentiality": "employer-owned platform — treat as sanitized/outcomes-only unless Robin confirms otherwise",
     "heroImage": "RESERVED — gallery component must render gracefully with an empty array until you add images",
-    "overview": "Matching and recommendation system mapping candidate CVs and job posts into embedding/sparse vector space, plus a personalized ranking layer.",
-    "problem": "TODO: what was the baseline matching quality/relevance before this system?",
-    "solution": "Elasticsearch + Vespa.ai matching pipeline with custom similarity algorithm; user-action-based preference vectors updated per interaction; fine-tuned ranking profiles.",
-    "architectureDiagram": "doc/recruitment-matching-recommendation.mermaid",
-    "technologies": ["Elasticsearch", "Vespa.ai", "Embeddings"],
-    "results": ["+33% relevance accuracy", "up to +50% relevant-result discovery", "up to +70% preference accuracy (first iteration)", "+70% recruiter data completeness (via chatbot)"],
+    "overview": "Matching and recommendation system mapping candidate CVs and job posts into embedding/sparse vector space, plus a personalized ranking layer and recruiter-facing chatbot.",
+    "problem": "Keyword-heavy matching under-ranked strong candidates and over-ranked superficial overlaps. Recruiter preference was not captured as a first-class signal, and job posts were often incomplete — so even a better index still produced weak shortlists until data quality and personalization were addressed together.",
+    "solution": "Hybrid embedding + sparse retrieval on Elasticsearch, then migration of search and recommendations to Vespa.ai for GPU-accelerated ranking and a proper recommendation layer. Preference vectors update from user actions; an industry chatbot improves job-post completeness before matching.",
+    "architectureDiagrams": [
+      {
+        "title": "Matching architecture",
+        "description": "CV/job extraction into hybrid indexes with ranking and chatbot inputs.",
+        "file": "doc/recruitment-matching-recommendation.mermaid"
+      },
+      {
+        "title": "Recruiter workflow sequence",
+        "description": "From job completion through hybrid retrieval to preference updates.",
+        "file": "doc/recruitment-matching-sequence.mermaid"
+      },
+      {
+        "title": "Personalization loop",
+        "description": "How action-derived preference vectors reshape ranking profiles.",
+        "file": "doc/recruitment-matching-personalization.mermaid"
+      }
+    ],
+    "technologies": [
+      "Elasticsearch",
+      "Vespa.ai",
+      "Embeddings",
+      "Sparse vectors",
+      "ETL",
+      "NLP",
+      "Conversational AI"
+    ],
+    "results": [
+      "+33% relevance accuracy",
+      "up to +50% relevant-result discovery",
+      "up to +70% preference accuracy (first iteration)",
+      "+70% recruiter data completeness (via chatbot)"
+    ],
     "gallery": [],
-    "lessonsLearned": "TODO"
+    "lessonsLearned": "Elasticsearch could carry hybrid search, but recommendation + preference updates pushed complexity past the point where Vespa’s ranking profiles were the cleaner production bet. Improving job-post completeness via the chatbot moved relevance as much as the retrieval model itself."
   },
   {
     "id": "esg-compliance-pipeline",
@@ -50,14 +133,38 @@
     "company": "Procycons",
     "confidentiality": "regulated financial-reporting client — treat as sanitized/outcomes-only unless Procycons confirms otherwise",
     "heroImage": "RESERVED — gallery component must render gracefully with an empty array until you add images",
-    "overview": "Auditable document-processing microservices for regulated ESG/financial reporting.",
-    "problem": "TODO: manual process time/cost before automation, regulatory constraints driving design choices",
-    "solution": "Temporal.io + FastAPI event-driven workflows; structured extraction with NLP and table-detection models; prompt optimization and output validation for compliance-grade reliability.",
-    "architectureDiagram": "doc/esg-compliance-pipeline.mermaid",
-    "technologies": ["Temporal.io", "FastAPI", "NLP"],
+    "overview": "Auditable document-processing microservices for regulated ESG/financial reporting — durable workflows, structured extraction, and validation suitable for compliance review.",
+    "problem": "ESG and lifecycle reports arrived in inconsistent formats; manual extraction was slow, hard to audit, and brittle under review. The system had to survive long-running parses and retries without losing lineage — “best effort” LLM output was not acceptable for regulated reporting.",
+    "solution": "Temporal.io + FastAPI event-driven microservices orchestrate ingestion, NLP extraction, and table detection. Prompt optimization and output validation gate results into an auditable store so every accepted field has a processing trail.",
+    "architectureDiagrams": [
+      {
+        "title": "Pipeline overview",
+        "description": "Ingest → Temporal orchestration → extractors → validation → audit outputs.",
+        "file": "doc/esg-compliance-pipeline.mermaid"
+      },
+      {
+        "title": "Workflow sequence",
+        "description": "Durable Temporal run from document submit through validated delivery.",
+        "file": "doc/esg-compliance-sequence.mermaid"
+      },
+      {
+        "title": "Reliability controls",
+        "description": "Retries, validation, and immutable trails for compliance-grade processing.",
+        "file": "doc/esg-compliance-reliability.mermaid"
+      }
+    ],
+    "technologies": [
+      "Temporal.io",
+      "FastAPI",
+      "NLP",
+      "Table detection",
+      "Prompt optimization",
+      "Python",
+      "Event-driven workflows"
+    ],
     "results": ["~80%+ extraction accuracy on complex ESG reports"],
     "gallery": [],
-    "lessonsLearned": "TODO"
+    "lessonsLearned": "Durability (Temporal) mattered as much as model quality: long documents and flaky extractors needed heartbeats and retries, not a single request/response. Validation as a hard gate kept accuracy claims honest under compliance scrutiny."
   },
   {
     "id": "evipackai-rag-platform",
@@ -65,14 +172,37 @@
     "company": "Eastern Pharmaceutical Group",
     "confidentiality": "employer-owned clinical platform — treat as sanitized/outcomes-only unless EPG confirms otherwise",
     "heroImage": "RESERVED — gallery component must render gracefully with an empty array until you add images",
-    "overview": "Led a 3-person team building EviPackAI, a production RAG platform for clinical and traditional evidence-package document generation.",
-    "problem": "TODO: what did the 6-week manual process look like, why was it slow, what was the compliance risk?",
-    "solution": "End-to-end RAG backend on curated golden-source licensed medical literature; retrieval evaluation framework; guardrails and output validation for clinical evidence standards.",
-    "architectureDiagram": "doc/evipackai-rag-platform.mermaid",
-    "technologies": ["RAG", "Vector database", "Guardrails"],
+    "overview": "Led a 3-person team building EviPackAI, a production RAG platform for clinical and traditional evidence-package document generation required for TGA market pathways in Australia.",
+    "problem": "Building evidence packages by hand meant weeks of literature search and citation assembly for each ingredient/indication path. Slow turnaround delayed regulatory readiness, and ungrounded generation was unacceptable where claims must map to licensed medical sources.",
+    "solution": "End-to-end RAG on a curated golden-source corpus of licensed and open medical literature, with retrieval evaluation, guardrails, and output validation. Delivery followed working increments with a small team so stakeholders saw usable packages early rather than a late big-bang doc dump.",
+    "architectureDiagrams": [
+      {
+        "title": "RAG platform",
+        "description": "Golden-source curation through retrieval, evaluation, and guardrailed generation.",
+        "file": "doc/evipackai-rag-platform.mermaid"
+      },
+      {
+        "title": "Authoring sequence",
+        "description": "Request → retrieve → evaluate → generate → package for review.",
+        "file": "doc/evipackai-rag-sequence.mermaid"
+      },
+      {
+        "title": "Evidence governance",
+        "description": "Source trust, evaluation, and team delivery controls around the package output.",
+        "file": "doc/evipackai-rag-governance.mermaid"
+      }
+    ],
+    "technologies": [
+      "RAG",
+      "Vector database",
+      "Retrieval evaluation",
+      "Guardrails",
+      "Output validation",
+      "Python"
+    ],
     "results": ["6 weeks → 30 minutes turnaround", "95%+ retrieval accuracy"],
     "gallery": [],
-    "lessonsLearned": "TODO — team leadership angle (3-person team) is worth its own note for the Leadership page too."
+    "lessonsLearned": "Retrieval evaluation and golden-source curation were the product — generation quality followed. Shipping a trunk MVP with a three-person team, then growing package features milestone-by-milestone, kept TGA-facing stakeholders engaged with real drafts instead of slideware."
   },
   {
     "id": "open-source-github-project",
@@ -83,7 +213,7 @@
     "overview": "TODO: pull from https://github.com/faridjb — which repo is your strongest showcase (KC-135 YOLOv8 detector? Jetson edge CV pipeline? something else)?",
     "problem": "TODO",
     "solution": "TODO",
-    "architectureDiagram": "TODO — build once repo is chosen",
+    "architectureDiagrams": [],
     "technologies": [],
     "results": [],
     "gallery": [],

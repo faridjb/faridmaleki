@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Author as Evidence author
+    participant API as RAG backend
+    participant Curate as Golden-source corpus
+    participant VDB as Vector index
+    participant Eval as Retrieval evaluation
+    participant Gen as Guardrailed generator
+    participant TGA as Evidence package
+
+    Author->>API: Ingredient / indication request
+    API->>VDB: Retrieve candidate passages
+    VDB-->>API: Ranked evidence
+    API->>Eval: Score retrieval quality
+    Eval-->>API: Pass / remediate
+    API->>Gen: Generate with citations
+    Gen->>Gen: Guardrails + output validation
+    Gen-->>API: Draft package sections
+    API-->>Author: Evidence package for review
+    Author->>TGA: TGA-ready documentation path
+    Note over Curate,VDB: Licensed + open medical literature, curated before indexing

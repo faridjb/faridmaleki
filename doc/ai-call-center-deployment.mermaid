@@ -1,0 +1,36 @@
+flowchart TB
+    subgraph Edge["Ingress"]
+        LB[Nginx Load Balancer]
+    end
+
+    subgraph Models["Model pools — horizontally scaled"]
+        ASR[ASR workers]
+        LLM[LLM workers]
+        TTS[TTS workers]
+    end
+
+    subgraph Control["Orchestration plane"]
+        ORCH[LangGraph agent runtime]
+        TOOLS[Tool bindings<br/>RAG · CRM · Ticketing]
+    end
+
+    subgraph Observability["Operations"]
+        PROM[Prometheus]
+        GRAF[Grafana]
+    end
+
+    LB --> ASR
+    ASR --> ORCH
+    ORCH --> TOOLS
+    ORCH --> LLM
+    LLM --> TTS
+    TTS --> LB
+
+    ASR -.-> PROM
+    LLM -.-> PROM
+    TTS -.-> PROM
+    ORCH -.-> PROM
+    PROM --> GRAF
+
+    style ORCH fill:#111827,stroke:#6366F1,color:#E5E7EB
+    style LB fill:#111827,stroke:#22D3EE,color:#E5E7EB

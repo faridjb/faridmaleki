@@ -1,0 +1,28 @@
+flowchart TB
+    subgraph Sources["Trusted sources"]
+        LIC[(Licensed literature)]
+        OPEN[(Open-access research)]
+    end
+
+    subgraph Control["Quality controls"]
+        CURATE[Golden-source curation]
+        EVAL[Retrieval evaluation]
+        GUARD[Guardrails / validation]
+    end
+
+    subgraph Product["Delivery"]
+        RAG[RAG generation]
+        PKG[(Evidence package)]
+        TEAM[3-person delivery team<br/>milestone-based]
+    end
+
+    LIC --> CURATE
+    OPEN --> CURATE
+    CURATE --> RAG
+    RAG --> EVAL
+    EVAL --> GUARD
+    GUARD --> PKG
+    TEAM --> RAG
+
+    style EVAL fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style GUARD fill:#111827,stroke:#6366F1,color:#E5E7EB

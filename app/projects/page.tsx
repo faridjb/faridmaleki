@@ -6,7 +6,8 @@ import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { ProjectCard } from '@/components/project-card';
 
-const DESCRIPTION = 'Production AI systems shipped in regulated, customer-facing environments.';
+const DESCRIPTION =
+  'Enterprise production AI systems — full case studies with measured outcomes and system architecture.';
 
 export function generateMetadata(): Metadata {
   return buildMetadata({

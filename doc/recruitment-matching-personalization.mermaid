@@ -1,0 +1,13 @@
+flowchart TD
+    ACTIONS[Recruiter / user actions] --> FEAT[Action feature extraction]
+    FEAT --> PREF[(Preference vectors)]
+    PREF --> PROFILE[Ranking profile fine-tuning]
+    PROFILE --> HYBRID[Hybrid match:<br/>dense + sparse + preferences]
+    INDEX[(Vespa / Elasticsearch)] --> HYBRID
+    HYBRID --> OUT[Personalized shortlist]
+
+    CHAT[Job-completion chatbot] --> QUALITY[Data sufficiency checks]
+    QUALITY --> INDEX
+
+    style HYBRID fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style PREF fill:#111827,stroke:#6366F1,color:#E5E7EB

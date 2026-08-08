@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant Recruiter
+    participant Chat as Industry chatbot
+    participant Jobs as Job corpus
+    participant CVs as CV corpus
+    participant Index as Vespa / ES index
+    participant Rank as Ranking layer
+    participant Pref as Preference updater
+
+    Recruiter->>Chat: Draft / complete job post
+    Chat->>Jobs: Structured job fields
+    CVs->>Index: Embed + sparse vectors
+    Jobs->>Index: Embed + sparse vectors
+    Recruiter->>Rank: Search / shortlist request
+    Rank->>Index: Hybrid retrieval
+    Index-->>Rank: Candidate set
+    Rank-->>Recruiter: Ranked matches
+    Recruiter->>Pref: Actions (open / save / reject)
+    Pref->>Rank: Updated preference vector

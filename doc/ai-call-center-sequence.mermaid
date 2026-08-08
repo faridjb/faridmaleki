@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Caller
+    participant Nginx as Nginx LB
+    participant ASR as ASR Pool
+    participant Orch as LangGraph Orchestrator
+    participant RAG as Knowledge / RAG
+    participant CRM as CRM & Ticketing
+    participant LLM as LLM Pool
+    participant TTS as TTS Pool
+
+    Caller->>Nginx: Audio in
+    Nginx->>ASR: Route to available worker
+    ASR->>Orch: Transcript + confidence
+    Orch->>Orch: Intent detection
+    alt Needs knowledge
+        Orch->>RAG: Retrieve evidence
+        RAG-->>Orch: Grounded context
+    end
+    alt Needs business action
+        Orch->>CRM: Tool call (ticket / CRM)
+        CRM-->>Orch: Action result
+    end
+    Orch->>LLM: Compose response
+    LLM-->>Orch: Response text
+    Orch->>TTS: Synthesize speech
+    TTS->>Nginx: Audio out
+    Nginx-->>Caller: Voice response

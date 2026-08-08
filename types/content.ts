@@ -37,6 +37,14 @@ export interface GalleryImage {
   caption?: string;
 }
 
+/** One Mermaid view in a project’s architecture section. */
+export interface ArchitectureDiagramRef {
+  title: string;
+  description?: string;
+  /** Path under doc/, e.g. "doc/ai-call-center.mermaid". */
+  file: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -46,7 +54,7 @@ export interface Project {
   overview: string;
   problem: string;
   solution: string;
-  architectureDiagram: string;
+  architectureDiagrams: ArchitectureDiagramRef[];
   technologies: string[];
   results: string[];
   gallery: GalleryImage[];

@@ -1,0 +1,29 @@
+flowchart LR
+    subgraph Sources["Network telemetry"]
+        APN[(APN core nodes)]
+        KPI[KPI / counter streams]
+    end
+
+    subgraph Pipeline["Detection pipeline"]
+        ETL[ETL + feature store]
+        MODEL[Seasonality-aware models]
+        AGENT[Agentic RCA]
+    end
+
+    subgraph Delivery["Operator interfaces"]
+        EMAIL[Automated email reports]
+        UI[Live ops dashboard]
+        TICKET[Ticket / workflow handoff]
+    end
+
+    APN --> ETL
+    KPI --> ETL
+    ETL --> MODEL
+    MODEL --> AGENT
+    AGENT --> EMAIL
+    AGENT --> UI
+    AGENT --> TICKET
+    UI -.operator feedback.-> MODEL
+
+    style MODEL fill:#111827,stroke:#22D3EE,color:#E5E7EB
+    style AGENT fill:#111827,stroke:#6366F1,color:#E5E7EB

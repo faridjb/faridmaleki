@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant Client as Upstream system
+    participant API as FastAPI ingest
+    participant WF as Temporal workflow
+    participant NLP as NLP extraction
+    participant Tables as Table detection
+    participant Val as Validation layer
+    participant Store as Audit store
+
+    Client->>API: Submit ESG document
+    API->>WF: Start durable workflow
+    par Parallel extractors
+        WF->>NLP: Text / entity extraction
+        WF->>Tables: Table structure recovery
+    end
+    NLP-->>WF: Structured fields
+    Tables-->>WF: Tabular facts
+    WF->>Val: Prompt optimization + checks
+    Val-->>WF: Validated payload
+    WF->>Store: Persist auditable trail
+    WF-->>API: Workflow complete
+    API-->>Client: Structured result + status
