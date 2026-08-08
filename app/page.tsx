@@ -77,7 +77,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col items-stretch gap-8 sm:flex-row sm:items-start sm:gap-8 lg:gap-12">
-                <p className="text-muted-foreground min-w-0 flex-1 text-base leading-relaxed text-justify hyphens-auto sm:text-lg [text-align-last:left]">
+                <p className="drop-cap text-muted-foreground min-w-0 flex-1 text-base leading-relaxed text-justify hyphens-auto sm:text-lg [text-align-last:left]">
                   {resume.summary}
                 </p>
 

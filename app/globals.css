@@ -183,6 +183,22 @@
 }
 
 /*
+ * Journal-style drop cap — larger first letter on lead paragraphs
+ * (home summary, about story, blog intro / post body).
+ */
+.drop-cap::first-letter,
+.drop-cap-prose > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: 3.35em;
+  font-weight: 600;
+  line-height: 0.85;
+  margin-right: 0.12em;
+  padding-top: 0.06em;
+  color: var(--foreground);
+}
+
+/*
  * Site-wide scroll atmosphere. --scroll-tone is 0→1 (set by ScrollAtmosphere).
  * Mixes accent near the top / early headings and accent-alt as you move down sections.
  */

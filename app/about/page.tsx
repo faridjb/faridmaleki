@@ -65,18 +65,20 @@ export default function AboutPage() {
                   />
                 </div>
               )}
-              <Markdown
-                components={{
-                  p: ({ ...props }) => (
-                    <p
-                      className="text-muted-foreground mb-6 text-base leading-relaxed text-justify hyphens-auto last:mb-0 [text-align-last:left]"
-                      {...props}
-                    />
-                  ),
-                }}
-              >
-                {story}
-              </Markdown>
+              <div className="drop-cap-prose">
+                <Markdown
+                  components={{
+                    p: ({ ...props }) => (
+                      <p
+                        className="text-muted-foreground mb-6 text-base leading-relaxed text-justify hyphens-auto last:mb-0 [text-align-last:left]"
+                        {...props}
+                      />
+                    ),
+                  }}
+                >
+                  {story}
+                </Markdown>
+              </div>
               {hasPhoto && <div className="clear-both" />}
             </div>
           </Reveal>

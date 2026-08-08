@@ -29,7 +29,9 @@ export default function BlogPage() {
           <h1 className="font-heading text-foreground mb-4 text-3xl font-semibold tracking-tight sm:text-4xl">
             Blog
           </h1>
-          <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed">{DESCRIPTION}</p>
+          <p className="drop-cap text-muted-foreground max-w-2xl text-lg leading-relaxed">
+            {DESCRIPTION}
+          </p>
         </Reveal>
 
         <div className="mt-12">

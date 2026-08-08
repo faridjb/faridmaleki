@@ -75,7 +75,13 @@ export default async function BlogPostPage({ params }: PageProps<'/blog/[slug]'>
             <TableOfContents toc={post.toc} />
           </Reveal>
           <Reveal>
-            <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions }} />
+            <div className="drop-cap-prose">
+              <MDXRemote
+                source={post.content}
+                components={mdxComponents}
+                options={{ mdxOptions }}
+              />
+            </div>
           </Reveal>
         </div>
       </Section>
