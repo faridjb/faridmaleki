@@ -60,10 +60,10 @@ export const siteConfig: SiteConfig = {
     { href: '/experience', label: 'Experience', enabled: true },
     { href: '/projects', label: 'Projects', enabled: true },
     { href: '/architecture', label: 'Architecture', enabled: true },
-    { href: '/contact', label: 'Contact', enabled: true },
     { href: '/resume', label: 'Resume', enabled: false }, // Sprint 9
     { href: '/leadership', label: 'Leadership', enabled: false }, // Sprint 10
     { href: '/open-source', label: 'Open Source', enabled: false }, // Sprint 11
     { href: '/blog', label: 'Blog', enabled: true },
+    { href: '/contact', label: 'Contact', enabled: true },
   ],
 };
