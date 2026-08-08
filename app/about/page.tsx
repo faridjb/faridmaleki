@@ -44,6 +44,22 @@ const PHILOSOPHY = [
     proof:
       '95%+ retrieval accuracy on licensed medical literature; network anomalies resolved with MTTR under 1 hour.',
   },
+  {
+    eyebrow: 'Principle 04',
+    title: 'Assign work to people, not titles',
+    description:
+      'Match tasks to background, communication style, and strengths — a team performs better when roles fit the person.',
+    proof:
+      'Mentored across countries via ADPlist; led delivery with a small team at Eastern Pharmaceutical.',
+  },
+  {
+    eyebrow: 'Principle 05',
+    title: 'Own the commitment',
+    description:
+      'If a milestone date is set, deliver something usable by that date — trust with managers is built on that, not on status updates.',
+    proof:
+      'Consistent delivery relationships across employers; turnaround and latency wins tied to clear milestones.',
+  },
 ];
 
 export default function AboutPage() {
@@ -95,7 +111,7 @@ export default function AboutPage() {
 
       {/* Philosophy */}
       <Section eyebrow="Philosophy" heading="How I build">
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {PHILOSOPHY.map((principle, index) => (
             <Reveal key={principle.title} index={index}>
               <Card className="flex h-full flex-col gap-3" hoverable={false}>
