@@ -25,6 +25,8 @@ import { ProjectCard } from '@/components/project-card';
 import { buttonVariants } from '@/components/ui/button';
 import { GithubIcon, LinkedinIcon } from '@/components/icons';
 import { PersonJsonLd } from '@/components/person-json-ld';
+import { CompanyLink } from '@/components/company-link';
+import { EmphasizedText } from '@/components/emphasized-text';
 
 const IMPACT_METRIC_COUNT = 4;
 const FEATURED_PROJECT_COUNT = 3;
@@ -130,7 +132,9 @@ export default function Home() {
               <Reveal key={`${metric.projectId}-${metric.value}`} index={index}>
                 <div className="flex flex-col gap-1">
                   <MetricStat value={metric.value} caption={metric.caption} />
-                  <p className="text-muted-foreground font-mono text-xs">{metric.company}</p>
+                  <p className="text-muted-foreground font-mono text-xs">
+                    <CompanyLink company={metric.company} />
+                  </p>
                 </div>
               </Reveal>
             ))}
@@ -174,13 +178,15 @@ export default function Home() {
                   <div>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-heading text-foreground text-lg font-semibold">
-                        {entry.company}
+                        <CompanyLink company={entry.company} />
                       </h3>
                       <p className="text-muted-foreground font-mono text-xs">{entry.period}</p>
                     </div>
                     <p className="text-accent mt-1 text-sm font-medium">{entry.role}</p>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{entry.summary}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    <EmphasizedText text={entry.summary} />
+                  </p>
                   {entry.achievements.length > 0 && (
                     <ul className="text-muted-foreground flex flex-col gap-2 text-sm">
                       {entry.achievements.slice(0, 2).map((achievement) => (
@@ -188,7 +194,7 @@ export default function Home() {
                           <span aria-hidden className="text-accent">
                             —
                           </span>
-                          {achievement}
+                          <EmphasizedText text={achievement} />
                         </li>
                       ))}
                     </ul>

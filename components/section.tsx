@@ -5,7 +5,7 @@ import { motifForSection } from '@/lib/section-motif';
 import { SectionPattern } from '@/components/section-pattern';
 
 interface SectionProps {
-  eyebrow?: string;
+  eyebrow?: ReactNode;
   heading?: string;
   description?: string;
   children?: ReactNode;
@@ -29,7 +29,8 @@ export function Section({
 }: SectionProps) {
   const Heading = as;
   const isScrollSubject = Boolean(eyebrow || heading);
-  const motif = motifForSection(`${eyebrow ?? ''}|${heading ?? ''}`);
+  const eyebrowKey = typeof eyebrow === 'string' ? eyebrow : '';
+  const motif = motifForSection(`${eyebrowKey}|${heading ?? ''}`);
 
   return (
     <section

@@ -39,6 +39,13 @@ export interface SiteConfig {
     nodeSpacing: number;
     rankSpacing: number;
   };
+  /**
+   * Employer websites keyed by canonical id. Aliases map display names in
+   * experience/projects/about copy onto these URLs. Icons are paths under public/.
+   */
+  employerUrls: Record<string, string>;
+  employerIcons: Record<string, string>;
+  employerAliases: Record<string, string[]>;
   nav: NavItem[];
 }
 
@@ -72,6 +79,36 @@ export const siteConfig: SiteConfig = {
     useMaxWidth: process.env.NEXT_PUBLIC_MERMAID_USE_MAX_WIDTH === 'true',
     nodeSpacing: Number(process.env.NEXT_PUBLIC_MERMAID_NODE_SPACING ?? 50),
     rankSpacing: Number(process.env.NEXT_PUBLIC_MERMAID_RANK_SPACING ?? 60),
+  },
+  employerUrls: {
+    easternPharma: process.env.NEXT_PUBLIC_EMPLOYER_URL_EASTERN_PHARMA ?? 'https://easternpharma.com.au/',
+    rightel: process.env.NEXT_PUBLIC_EMPLOYER_URL_RIGHTEL ?? 'https://www.rightel.ir/en/home',
+    robin: process.env.NEXT_PUBLIC_EMPLOYER_URL_ROBIN ?? 'https://www.recruitrobin.com/',
+    mci: process.env.NEXT_PUBLIC_EMPLOYER_URL_MCI ?? 'http://mci.ir/',
+    mciRd: process.env.NEXT_PUBLIC_EMPLOYER_URL_MCI_RD ?? 'http://hamrahrd.ir/',
+    procycons: process.env.NEXT_PUBLIC_EMPLOYER_URL_PROCYCONS ?? 'https://procycons.com/en/',
+  },
+  employerIcons: {
+    easternPharma:
+      process.env.NEXT_PUBLIC_EMPLOYER_ICON_EASTERN_PHARMA ?? '/images/employers/eastern-pharma.png',
+    rightel: process.env.NEXT_PUBLIC_EMPLOYER_ICON_RIGHTEL ?? '/images/employers/rightel.png',
+    robin: process.env.NEXT_PUBLIC_EMPLOYER_ICON_ROBIN ?? '/images/employers/robin.png',
+    mci: process.env.NEXT_PUBLIC_EMPLOYER_ICON_MCI ?? '/images/employers/mci.png',
+    mciRd: process.env.NEXT_PUBLIC_EMPLOYER_ICON_MCI_RD ?? '/images/employers/mci-rd.png',
+    procycons: process.env.NEXT_PUBLIC_EMPLOYER_ICON_PROCYCONS ?? '/images/employers/procycons.png',
+  },
+  employerAliases: {
+    easternPharma: [
+      'Eastern Pharmaceutical Group Pty Ltd',
+      'Eastern Pharmaceutical Group',
+      'Eastern Pharmaceutical',
+      'Eastern Pharma',
+    ],
+    rightel: ['RighTel', 'Rightel'],
+    robin: ['Robin'],
+    mciRd: ['MCI R&D Center', 'MCI R&D'],
+    mci: ['MCI'],
+    procycons: ['Procycons'],
   },
   nav: [
     { href: '/', label: 'Home', enabled: true },

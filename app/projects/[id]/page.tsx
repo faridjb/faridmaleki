@@ -20,6 +20,7 @@ import { TechBadge } from '@/components/tech-badge';
 import { MetricStat } from '@/components/metric-stat';
 import { Gallery } from '@/components/gallery';
 import { ArchitectureDiagram } from '@/components/architecture-diagram';
+import { CompanyLink } from '@/components/company-link';
 
 export function generateStaticParams() {
   return getProjects()
@@ -75,7 +76,11 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
 
   return (
     <main>
-      <Section eyebrow={!isTodo(project.company) ? project.company : undefined}>
+      <Section
+        eyebrow={
+          !isTodo(project.company) ? <CompanyLink company={project.company} /> : undefined
+        }
+      >
         <Reveal>
           <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
             {project.title}

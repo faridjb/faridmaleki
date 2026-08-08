@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Card } from '@/components/card';
 import { TechBadge } from '@/components/tech-badge';
 import { MetricStat } from '@/components/metric-stat';
+import { CompanyLink } from '@/components/company-link';
 
 interface ProjectCardProps {
   project: PublicProject;
@@ -19,27 +20,27 @@ interface ProjectCardProps {
 /**
  * Case-study preview card: company, title, overview, a capped set of TechBadges, and
  * an optional headline metric, linking through to the full case study at /projects/[id].
+ * Company sits outside the case-study Link so it can open the employer site without nesting.
  */
 export function ProjectCard({ project, className, maxTechBadges = 4, metric }: ProjectCardProps) {
   const badges = project.technologies.slice(0, maxTechBadges);
 
   return (
-    <Link
-      href={`/projects/${project.id}`}
-      className={cn(
-        'group focus-visible:ring-ring block rounded-xl focus-visible:ring-2',
-        className
-      )}
-    >
-      <Card className="flex h-full flex-col gap-4">
-        <div>
-          <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-            {project.company}
-          </p>
-          <h3 className="font-heading text-foreground group-hover:text-accent mt-2 text-lg font-semibold tracking-tight transition-colors">
+    <Card className={cn('flex h-full flex-col gap-4', className)}>
+      <div>
+        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+          <CompanyLink company={project.company} />
+        </p>
+        <Link
+          href={`/projects/${project.id}`}
+          className="group focus-visible:ring-ring mt-2 block rounded-sm focus-visible:ring-2"
+        >
+          <h3 className="font-heading text-foreground group-hover:text-accent text-lg font-semibold tracking-tight transition-colors">
             {project.title}
           </h3>
-        </div>
+        </Link>
+      </div>
+      <Link href={`/projects/${project.id}`} className="flex flex-1 flex-col gap-4">
         <p className="text-muted-foreground flex-1 text-sm leading-relaxed">{project.overview}</p>
         {metric && <MetricStat value={metric.value} caption={metric.caption} />}
         {badges.length > 0 && (
@@ -49,7 +50,7 @@ export function ProjectCard({ project, className, maxTechBadges = 4, metric }: P
             ))}
           </div>
         )}
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 }

@@ -8,6 +8,7 @@ import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
 import { ArchitectureDiagram } from '@/components/architecture-diagram';
+import { CompanyLink } from '@/components/company-link';
 
 /** Same eligibility filter the page body uses — kept in one place so metadata and content never disagree on the count. */
 function getArchitectureProjects() {
@@ -49,7 +50,7 @@ export default function ArchitecturePage() {
               <div>
                 {!isTodo(project.company) && (
                   <p className="text-muted-foreground mb-1 font-mono text-xs tracking-widest uppercase">
-                    {project.company}
+                    <CompanyLink company={project.company} />
                   </p>
                 )}
                 <h2 className="font-heading text-foreground text-xl font-semibold tracking-tight sm:text-2xl">

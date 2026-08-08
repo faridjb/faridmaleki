@@ -6,9 +6,11 @@ import { siteConfig } from '@/config/site.config';
 import { getAboutStory, getResume, publicAssetExists } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
 import { withBasePath } from '@/lib/utils';
+import { linkifyCompanyNames } from '@/lib/company-links';
 import { Section } from '@/components/section';
 import { Reveal } from '@/components/reveal';
 import { Card } from '@/components/card';
+import { EmphasizedText } from '@/components/emphasized-text';
 
 export function generateMetadata(): Metadata {
   const resume = getResume();
@@ -64,7 +66,7 @@ const PHILOSOPHY = [
 
 export default function AboutPage() {
   const resume = getResume();
-  const story = getAboutStory();
+  const story = linkifyCompanyNames(getAboutStory());
   const education = resume.education.filter((entry) => entry.period.trim() !== '');
   const photoRelative = siteConfig.photoPath.replace(/^\/+/, '');
   const hasPhoto = publicAssetExists(photoRelative);
@@ -98,6 +100,17 @@ export default function AboutPage() {
                         {...props}
                       />
                     ),
+                    a: ({ href, children, ...props }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-foreground hover:text-accent font-medium underline-offset-4 hover:underline"
+                        {...props}
+                      >
+                        {children}
+                      </a>
+                    ),
                   }}
                 >
                   {story}
@@ -125,7 +138,7 @@ export default function AboutPage() {
                   {principle.description}
                 </p>
                 <p className="text-muted-foreground border-border mt-auto border-t pt-3 font-mono text-xs leading-relaxed">
-                  {principle.proof}
+                  <EmphasizedText text={principle.proof} />
                 </p>
               </Card>
             </Reveal>

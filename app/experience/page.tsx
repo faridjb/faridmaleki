@@ -14,6 +14,7 @@ import { Card } from '@/components/card';
 import { TechBadge } from '@/components/tech-badge';
 import { Timeline, TimelineItem } from '@/components/timeline';
 import { EmphasizedText } from '@/components/emphasized-text';
+import { CompanyLink } from '@/components/company-link';
 
 export function generateMetadata(): Metadata {
   const years = getYearsOfExperience(getResume());
@@ -52,7 +53,7 @@ export default function ExperiencePage() {
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <div>
                         <h3 className="font-heading text-foreground text-lg font-semibold">
-                          {entry.company}
+                          <CompanyLink company={entry.company} showIcon />
                         </h3>
                         <p className="text-accent mt-0.5 text-sm font-medium">{entry.role}</p>
                       </div>
@@ -61,7 +62,9 @@ export default function ExperiencePage() {
                       </p>
                     </div>
 
-                    <p className="text-muted-foreground text-sm leading-relaxed">{entry.summary}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      <EmphasizedText text={entry.summary} />
+                    </p>
 
                     {entry.technologies.length > 0 && (
                       <div className="flex flex-wrap gap-2">
