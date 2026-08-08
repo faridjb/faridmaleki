@@ -22,19 +22,27 @@ export function generateMetadata(): Metadata {
 const PHILOSOPHY = [
   {
     eyebrow: 'Principle 01',
-    title: 'SOLID principles',
-    description: 'Code structured for change, not just for working today.',
+    title: 'Deliver in working increments',
+    description:
+      'A running core system first, then features as milestones with a defined, usable output — stakeholders see value on a schedule, not at the end.',
+    proof:
+      'Eastern Pharmaceutical: evidence-package turnaround from 6 weeks to 30 minutes with a 3-person team.',
   },
   {
     eyebrow: 'Principle 02',
-    title: 'Design patterns, applied deliberately',
+    title: 'Design for production constraints',
     description:
-      'The right structural solution for a recurring problem, not patterns for their own sake.',
+      'On-premise deployment, latency, throughput, and privacy are design inputs from day one, not later fixes.',
+    proof:
+      'MCI: model-pool architecture cut latency 70% and sustained 100 concurrent calls.',
   },
   {
     eyebrow: 'Principle 03',
-    title: 'Clean code',
-    description: 'Readability and maintainability as a first-class concern.',
+    title: 'Make output verifiable',
+    description:
+      'Answers traceable to sources, accuracy that is measured rather than asserted, and failure modes that are monitored and recoverable.',
+    proof:
+      '95%+ retrieval accuracy on licensed medical literature; network anomalies resolved with MTTR under 1 hour.',
   },
 ];
 
@@ -99,6 +107,9 @@ export default function AboutPage() {
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {principle.description}
+                </p>
+                <p className="text-muted-foreground border-border mt-auto border-t pt-3 font-mono text-xs leading-relaxed">
+                  {principle.proof}
                 </p>
               </Card>
             </Reveal>
