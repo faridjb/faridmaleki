@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
 
+import { siteConfig } from '@/config/site.config';
 import { cn } from '@/lib/utils';
 
 interface ArchitectureDiagramProps {
@@ -51,16 +52,66 @@ function buildThemeVariables() {
     clusterBkg: bgPrimary,
     clusterBorder: textMuted,
     edgeLabelBackground: bgSurface,
-    fontFamily: 'var(--font-mono), ui-monospace, monospace',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   };
 }
 
+type MermaidCurve =
+  | 'basis'
+  | 'bumpX'
+  | 'bumpY'
+  | 'cardinal'
+  | 'catmullRom'
+  | 'linear'
+  | 'monotoneX'
+  | 'monotoneY'
+  | 'natural'
+  | 'step'
+  | 'stepAfter'
+  | 'stepBefore'
+  | 'rounded';
+
+const VALID_CURVES = new Set<string>([
+  'basis',
+  'bumpX',
+  'bumpY',
+  'cardinal',
+  'catmullRom',
+  'linear',
+  'monotoneX',
+  'monotoneY',
+  'natural',
+  'step',
+  'stepAfter',
+  'stepBefore',
+  'rounded',
+]);
+
+let elkRegistered = false;
+/** Serialize Mermaid renders — parallel calls share one engine and race on init/render. */
+let renderQueue: Promise<void> = Promise.resolve();
+
+function enqueueRender(task: () => Promise<void>): Promise<void> {
+  const next = renderQueue.then(task, task);
+  renderQueue = next.then(
+    () => undefined,
+    () => undefined
+  );
+  return next;
+}
+
 /**
- * Client-only Mermaid renderer, isolated from the (server) case-study/architecture pages
- * so static export still works — Mermaid touches the DOM directly and can't run during
- * SSR/build. Re-renders on theme change (re-reading the CSS tokens above) so a light/dark
- * switch never leaves stale colors, and falls back to a muted note instead of crashing the
- * page if the diagram fails to parse.
+ * Prefer diagram-type ELK (`flowchart-elk`) over `initialize({ layout: 'elk' })`, which
+ * has been observed to throw circular-JSON errors under React's DOM fiber graph.
+ */
+function toElkDefinition(definition: string): string {
+  return definition.replace(/^(\s*)flowchart(\b)/m, '$1flowchart-elk$2');
+}
+
+/**
+ * Client-only Mermaid renderer. Straight edges via flowchart.curve (default: linear) —
+ * the same lever Cursor / Notion previews use for non-curved connectors. Optional ELK
+ * layout via siteConfig.mermaid.layout=elk with dagre fallback.
  */
 export function ArchitectureDiagram({ definition, className }: ArchitectureDiagramProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,26 +129,55 @@ export function ArchitectureDiagram({ definition, className }: ArchitectureDiagr
     setStatus('loading');
 
     async function render() {
-      try {
-        const { default: mermaid } = await import('mermaid');
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: 'base',
-          themeVariables: buildThemeVariables(),
-          securityLevel: 'strict',
-          // Diagrams render at their natural size and scroll horizontally on small
-          // screens instead of Mermaid's default of shrinking to fit the container,
-          // which would make dense flowcharts illegible on mobile.
-          flowchart: { useMaxWidth: false },
-        });
-        const { svg } = await mermaid.render(`architecture-${diagramId}`, definition);
-        if (!cancelled && containerRef.current) {
-          containerRef.current.innerHTML = svg;
-          setStatus('ready');
+      await enqueueRender(async () => {
+        if (cancelled) return;
+
+        try {
+          const { default: mermaid } = await import('mermaid');
+          const { layout, curve, useMaxWidth, nodeSpacing, rankSpacing } = siteConfig.mermaid;
+          const resolvedCurve = (VALID_CURVES.has(curve) ? curve : 'linear') as MermaidCurve;
+          const preferElk = layout.startsWith('elk');
+
+          if (preferElk && !elkRegistered) {
+            const elkMod = await import('@mermaid-js/layout-elk');
+            const elkLayouts = 'default' in elkMod ? elkMod.default : elkMod;
+            mermaid.registerLayoutLoaders(elkLayouts);
+            elkRegistered = true;
+          }
+
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            themeVariables: buildThemeVariables(),
+            securityLevel: 'strict',
+            flowchart: {
+              useMaxWidth,
+              curve: resolvedCurve,
+              nodeSpacing,
+              rankSpacing,
+              htmlLabels: true,
+            },
+          });
+
+          let svg: string;
+          try {
+            const source = preferElk ? toElkDefinition(definition) : definition;
+            ({ svg } = await mermaid.render(`architecture-${diagramId}`, source));
+          } catch (elkErr) {
+            if (!preferElk) throw elkErr;
+            console.warn('[ArchitectureDiagram] ELK failed, falling back to dagre', elkErr);
+            ({ svg } = await mermaid.render(`architecture-${diagramId}-dagre`, definition));
+          }
+
+          if (!cancelled && containerRef.current) {
+            containerRef.current.innerHTML = svg;
+            setStatus('ready');
+          }
+        } catch (err) {
+          console.error('[ArchitectureDiagram]', err);
+          if (!cancelled) setStatus('error');
         }
-      } catch {
-        if (!cancelled) setStatus('error');
-      }
+      });
     }
 
     render();

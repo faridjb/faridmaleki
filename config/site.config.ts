@@ -27,6 +27,18 @@ export interface SiteConfig {
   scrollAtmosphere: { springStiffness: number; springDamping: number };
   /** Framer spring used by site-wide scroll-morphing background patterns. */
   scrollPatterns: { springStiffness: number; springDamping: number };
+  /**
+   * Mermaid architecture diagrams.
+   * `curve: linear` = straight edges (Cursor/Notion-like).
+   * `layout: elk` needs `@mermaid-js/layout-elk` (opt-in; falls back to dagre).
+   */
+  mermaid: {
+    layout: string;
+    curve: string;
+    useMaxWidth: boolean;
+    nodeSpacing: number;
+    rankSpacing: number;
+  };
   nav: NavItem[];
 }
 
@@ -53,6 +65,13 @@ export const siteConfig: SiteConfig = {
   scrollPatterns: {
     springStiffness: Number(process.env.NEXT_PUBLIC_SCROLL_PATTERNS_STIFFNESS ?? 60),
     springDamping: Number(process.env.NEXT_PUBLIC_SCROLL_PATTERNS_DAMPING ?? 32),
+  },
+  mermaid: {
+    layout: process.env.NEXT_PUBLIC_MERMAID_LAYOUT ?? 'dagre',
+    curve: process.env.NEXT_PUBLIC_MERMAID_CURVE ?? 'linear',
+    useMaxWidth: process.env.NEXT_PUBLIC_MERMAID_USE_MAX_WIDTH === 'true',
+    nodeSpacing: Number(process.env.NEXT_PUBLIC_MERMAID_NODE_SPACING ?? 50),
+    rankSpacing: Number(process.env.NEXT_PUBLIC_MERMAID_RANK_SPACING ?? 60),
   },
   nav: [
     { href: '/', label: 'Home', enabled: true },
